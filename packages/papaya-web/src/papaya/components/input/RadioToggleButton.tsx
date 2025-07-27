@@ -1,4 +1,4 @@
-import { Box, Radio, ToggleButton, ToggleButtonProps, Typography } from '@mui/material'
+import { Box, ToggleButton, ToggleButtonProps, Typography } from '@mui/material'
 
 interface IRadioToggleButtonProps extends ToggleButtonProps {
   heading: string
@@ -15,7 +15,7 @@ const RadioToggleButton = (props: IRadioToggleButtonProps) => {
           <Typography variant="body1">{heading}</Typography>
           <Typography variant="body2">{description}</Typography>
         </Box>
-        <Radio sx={{ mt: -1, mr: -1 }} checked={props.selected} disabled={props.disabled} />
+        {/* <Radio sx={{ mt: -1, mr: -1 }} checked={props.selected} disabled={props.disabled} /> */}
       </Box>
       {props.children}
     </ToggleButton>

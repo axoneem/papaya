@@ -11,16 +11,26 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WelcomeLayoutImport } from './routes/_welcomeLayout'
 import { Route as MainLayoutImport } from './routes/_mainLayout'
 import { Route as IndexImport } from './routes/index'
 import { Route as MainLayoutCategoriesImport } from './routes/_mainLayout/categories'
 import { Route as MainLayoutAccountsImport } from './routes/_mainLayout/accounts'
+import { Route as WelcomeLayoutWelcomeIndexImport } from './routes/_welcomeLayout/welcome.index'
 import { Route as MainLayoutSettingsIndexImport } from './routes/_mainLayout/settings.index'
 import { Route as MainLayoutJournalIndexImport } from './routes/_mainLayout/journal.index'
+import { Route as WelcomeLayoutWelcomeJournalImport } from './routes/_welcomeLayout/welcome.journal'
+import { Route as WelcomeLayoutWelcomeGettingStartedImport } from './routes/_welcomeLayout/welcome.getting-started'
+import { Route as WelcomeLayoutWelcomeCategoriesImport } from './routes/_welcomeLayout/welcome.categories'
 import { Route as MainLayoutSettingsSectionImport } from './routes/_mainLayout/settings.$section'
 import { Route as MainLayoutJournalViewSplatImport } from './routes/_mainLayout/journal.$view.$'
 
 // Create/Update Routes
+
+const WelcomeLayoutRoute = WelcomeLayoutImport.update({
+  id: '/_welcomeLayout',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const MainLayoutRoute = MainLayoutImport.update({
   id: '/_mainLayout',
@@ -45,6 +55,12 @@ const MainLayoutAccountsRoute = MainLayoutAccountsImport.update({
   getParentRoute: () => MainLayoutRoute,
 } as any)
 
+const WelcomeLayoutWelcomeIndexRoute = WelcomeLayoutWelcomeIndexImport.update({
+  id: '/welcome/',
+  path: '/welcome/',
+  getParentRoute: () => WelcomeLayoutRoute,
+} as any)
+
 const MainLayoutSettingsIndexRoute = MainLayoutSettingsIndexImport.update({
   id: '/settings/',
   path: '/settings/',
@@ -56,6 +72,27 @@ const MainLayoutJournalIndexRoute = MainLayoutJournalIndexImport.update({
   path: '/journal/',
   getParentRoute: () => MainLayoutRoute,
 } as any)
+
+const WelcomeLayoutWelcomeJournalRoute =
+  WelcomeLayoutWelcomeJournalImport.update({
+    id: '/welcome/journal',
+    path: '/welcome/journal',
+    getParentRoute: () => WelcomeLayoutRoute,
+  } as any)
+
+const WelcomeLayoutWelcomeGettingStartedRoute =
+  WelcomeLayoutWelcomeGettingStartedImport.update({
+    id: '/welcome/getting-started',
+    path: '/welcome/getting-started',
+    getParentRoute: () => WelcomeLayoutRoute,
+  } as any)
+
+const WelcomeLayoutWelcomeCategoriesRoute =
+  WelcomeLayoutWelcomeCategoriesImport.update({
+    id: '/welcome/categories',
+    path: '/welcome/categories',
+    getParentRoute: () => WelcomeLayoutRoute,
+  } as any)
 
 const MainLayoutSettingsSectionRoute = MainLayoutSettingsSectionImport.update({
   id: '/settings/$section',
@@ -89,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutImport
       parentRoute: typeof rootRoute
     }
+    '/_welcomeLayout': {
+      id: '/_welcomeLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WelcomeLayoutImport
+      parentRoute: typeof rootRoute
+    }
     '/_mainLayout/accounts': {
       id: '/_mainLayout/accounts'
       path: '/accounts'
@@ -110,6 +154,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutSettingsSectionImport
       parentRoute: typeof MainLayoutImport
     }
+    '/_welcomeLayout/welcome/categories': {
+      id: '/_welcomeLayout/welcome/categories'
+      path: '/welcome/categories'
+      fullPath: '/welcome/categories'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeCategoriesImport
+      parentRoute: typeof WelcomeLayoutImport
+    }
+    '/_welcomeLayout/welcome/getting-started': {
+      id: '/_welcomeLayout/welcome/getting-started'
+      path: '/welcome/getting-started'
+      fullPath: '/welcome/getting-started'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeGettingStartedImport
+      parentRoute: typeof WelcomeLayoutImport
+    }
+    '/_welcomeLayout/welcome/journal': {
+      id: '/_welcomeLayout/welcome/journal'
+      path: '/welcome/journal'
+      fullPath: '/welcome/journal'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeJournalImport
+      parentRoute: typeof WelcomeLayoutImport
+    }
     '/_mainLayout/journal/': {
       id: '/_mainLayout/journal/'
       path: '/journal'
@@ -123,6 +188,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof MainLayoutSettingsIndexImport
       parentRoute: typeof MainLayoutImport
+    }
+    '/_welcomeLayout/welcome/': {
+      id: '/_welcomeLayout/welcome/'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeIndexImport
+      parentRoute: typeof WelcomeLayoutImport
     }
     '/_mainLayout/journal/$view/$': {
       id: '/_mainLayout/journal/$view/$'
@@ -158,25 +230,52 @@ const MainLayoutRouteWithChildren = MainLayoutRoute._addFileChildren(
   MainLayoutRouteChildren,
 )
 
+interface WelcomeLayoutRouteChildren {
+  WelcomeLayoutWelcomeCategoriesRoute: typeof WelcomeLayoutWelcomeCategoriesRoute
+  WelcomeLayoutWelcomeGettingStartedRoute: typeof WelcomeLayoutWelcomeGettingStartedRoute
+  WelcomeLayoutWelcomeJournalRoute: typeof WelcomeLayoutWelcomeJournalRoute
+  WelcomeLayoutWelcomeIndexRoute: typeof WelcomeLayoutWelcomeIndexRoute
+}
+
+const WelcomeLayoutRouteChildren: WelcomeLayoutRouteChildren = {
+  WelcomeLayoutWelcomeCategoriesRoute: WelcomeLayoutWelcomeCategoriesRoute,
+  WelcomeLayoutWelcomeGettingStartedRoute:
+    WelcomeLayoutWelcomeGettingStartedRoute,
+  WelcomeLayoutWelcomeJournalRoute: WelcomeLayoutWelcomeJournalRoute,
+  WelcomeLayoutWelcomeIndexRoute: WelcomeLayoutWelcomeIndexRoute,
+}
+
+const WelcomeLayoutRouteWithChildren = WelcomeLayoutRoute._addFileChildren(
+  WelcomeLayoutRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof MainLayoutRouteWithChildren
+  '': typeof WelcomeLayoutRouteWithChildren
   '/accounts': typeof MainLayoutAccountsRoute
   '/categories': typeof MainLayoutCategoriesRoute
   '/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
   '/journal': typeof MainLayoutJournalIndexRoute
   '/settings': typeof MainLayoutSettingsIndexRoute
+  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
   '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof MainLayoutRouteWithChildren
+  '': typeof WelcomeLayoutRouteWithChildren
   '/accounts': typeof MainLayoutAccountsRoute
   '/categories': typeof MainLayoutCategoriesRoute
   '/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
   '/journal': typeof MainLayoutJournalIndexRoute
   '/settings': typeof MainLayoutSettingsIndexRoute
+  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
   '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
 }
 
@@ -184,11 +283,16 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_mainLayout': typeof MainLayoutRouteWithChildren
+  '/_welcomeLayout': typeof WelcomeLayoutRouteWithChildren
   '/_mainLayout/accounts': typeof MainLayoutAccountsRoute
   '/_mainLayout/categories': typeof MainLayoutCategoriesRoute
   '/_mainLayout/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/_welcomeLayout/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/_welcomeLayout/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/_welcomeLayout/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
   '/_mainLayout/journal/': typeof MainLayoutJournalIndexRoute
   '/_mainLayout/settings/': typeof MainLayoutSettingsIndexRoute
+  '/_welcomeLayout/welcome/': typeof WelcomeLayoutWelcomeIndexRoute
   '/_mainLayout/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
 }
 
@@ -200,8 +304,12 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/categories'
     | '/settings/$section'
+    | '/welcome/categories'
+    | '/welcome/getting-started'
+    | '/welcome/journal'
     | '/journal'
     | '/settings'
+    | '/welcome'
     | '/journal/$view/$'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -210,18 +318,27 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/categories'
     | '/settings/$section'
+    | '/welcome/categories'
+    | '/welcome/getting-started'
+    | '/welcome/journal'
     | '/journal'
     | '/settings'
+    | '/welcome'
     | '/journal/$view/$'
   id:
     | '__root__'
     | '/'
     | '/_mainLayout'
+    | '/_welcomeLayout'
     | '/_mainLayout/accounts'
     | '/_mainLayout/categories'
     | '/_mainLayout/settings/$section'
+    | '/_welcomeLayout/welcome/categories'
+    | '/_welcomeLayout/welcome/getting-started'
+    | '/_welcomeLayout/welcome/journal'
     | '/_mainLayout/journal/'
     | '/_mainLayout/settings/'
+    | '/_welcomeLayout/welcome/'
     | '/_mainLayout/journal/$view/$'
   fileRoutesById: FileRoutesById
 }
@@ -229,11 +346,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MainLayoutRoute: typeof MainLayoutRouteWithChildren
+  WelcomeLayoutRoute: typeof WelcomeLayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainLayoutRoute: MainLayoutRouteWithChildren,
+  WelcomeLayoutRoute: WelcomeLayoutRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -247,7 +366,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_mainLayout"
+        "/_mainLayout",
+        "/_welcomeLayout"
       ]
     },
     "/": {
@@ -264,6 +384,15 @@ export const routeTree = rootRoute
         "/_mainLayout/journal/$view/$"
       ]
     },
+    "/_welcomeLayout": {
+      "filePath": "_welcomeLayout.tsx",
+      "children": [
+        "/_welcomeLayout/welcome/categories",
+        "/_welcomeLayout/welcome/getting-started",
+        "/_welcomeLayout/welcome/journal",
+        "/_welcomeLayout/welcome/"
+      ]
+    },
     "/_mainLayout/accounts": {
       "filePath": "_mainLayout/accounts.tsx",
       "parent": "/_mainLayout"
@@ -276,6 +405,18 @@ export const routeTree = rootRoute
       "filePath": "_mainLayout/settings.$section.tsx",
       "parent": "/_mainLayout"
     },
+    "/_welcomeLayout/welcome/categories": {
+      "filePath": "_welcomeLayout/welcome.categories.tsx",
+      "parent": "/_welcomeLayout"
+    },
+    "/_welcomeLayout/welcome/getting-started": {
+      "filePath": "_welcomeLayout/welcome.getting-started.tsx",
+      "parent": "/_welcomeLayout"
+    },
+    "/_welcomeLayout/welcome/journal": {
+      "filePath": "_welcomeLayout/welcome.journal.tsx",
+      "parent": "/_welcomeLayout"
+    },
     "/_mainLayout/journal/": {
       "filePath": "_mainLayout/journal.index.tsx",
       "parent": "/_mainLayout"
@@ -283,6 +424,10 @@ export const routeTree = rootRoute
     "/_mainLayout/settings/": {
       "filePath": "_mainLayout/settings.index.tsx",
       "parent": "/_mainLayout"
+    },
+    "/_welcomeLayout/welcome/": {
+      "filePath": "_welcomeLayout/welcome.index.tsx",
+      "parent": "/_welcomeLayout"
     },
     "/_mainLayout/journal/$view/$": {
       "filePath": "_mainLayout/journal.$view.$.tsx",
