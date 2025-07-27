@@ -19,6 +19,7 @@ import { Route as MainLayoutAccountsImport } from './routes/_mainLayout/accounts
 import { Route as WelcomeLayoutWelcomeIndexImport } from './routes/_welcomeLayout/welcome.index'
 import { Route as MainLayoutSettingsIndexImport } from './routes/_mainLayout/settings.index'
 import { Route as MainLayoutJournalIndexImport } from './routes/_mainLayout/journal.index'
+import { Route as WelcomeLayoutWelcomeStartImport } from './routes/_welcomeLayout/welcome.start'
 import { Route as WelcomeLayoutWelcomeJournalImport } from './routes/_welcomeLayout/welcome.journal'
 import { Route as WelcomeLayoutWelcomeGettingStartedImport } from './routes/_welcomeLayout/welcome.getting-started'
 import { Route as WelcomeLayoutWelcomeCategoriesImport } from './routes/_welcomeLayout/welcome.categories'
@@ -71,6 +72,12 @@ const MainLayoutJournalIndexRoute = MainLayoutJournalIndexImport.update({
   id: '/journal/',
   path: '/journal/',
   getParentRoute: () => MainLayoutRoute,
+} as any)
+
+const WelcomeLayoutWelcomeStartRoute = WelcomeLayoutWelcomeStartImport.update({
+  id: '/welcome/start',
+  path: '/welcome/start',
+  getParentRoute: () => WelcomeLayoutRoute,
 } as any)
 
 const WelcomeLayoutWelcomeJournalRoute =
@@ -175,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeLayoutWelcomeJournalImport
       parentRoute: typeof WelcomeLayoutImport
     }
+    '/_welcomeLayout/welcome/start': {
+      id: '/_welcomeLayout/welcome/start'
+      path: '/welcome/start'
+      fullPath: '/welcome/start'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeStartImport
+      parentRoute: typeof WelcomeLayoutImport
+    }
     '/_mainLayout/journal/': {
       id: '/_mainLayout/journal/'
       path: '/journal'
@@ -234,6 +248,7 @@ interface WelcomeLayoutRouteChildren {
   WelcomeLayoutWelcomeCategoriesRoute: typeof WelcomeLayoutWelcomeCategoriesRoute
   WelcomeLayoutWelcomeGettingStartedRoute: typeof WelcomeLayoutWelcomeGettingStartedRoute
   WelcomeLayoutWelcomeJournalRoute: typeof WelcomeLayoutWelcomeJournalRoute
+  WelcomeLayoutWelcomeStartRoute: typeof WelcomeLayoutWelcomeStartRoute
   WelcomeLayoutWelcomeIndexRoute: typeof WelcomeLayoutWelcomeIndexRoute
 }
 
@@ -242,6 +257,7 @@ const WelcomeLayoutRouteChildren: WelcomeLayoutRouteChildren = {
   WelcomeLayoutWelcomeGettingStartedRoute:
     WelcomeLayoutWelcomeGettingStartedRoute,
   WelcomeLayoutWelcomeJournalRoute: WelcomeLayoutWelcomeJournalRoute,
+  WelcomeLayoutWelcomeStartRoute: WelcomeLayoutWelcomeStartRoute,
   WelcomeLayoutWelcomeIndexRoute: WelcomeLayoutWelcomeIndexRoute,
 }
 
@@ -258,6 +274,7 @@ export interface FileRoutesByFullPath {
   '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
   '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
   '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
   '/journal': typeof MainLayoutJournalIndexRoute
   '/settings': typeof MainLayoutSettingsIndexRoute
   '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
@@ -273,6 +290,7 @@ export interface FileRoutesByTo {
   '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
   '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
   '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
   '/journal': typeof MainLayoutJournalIndexRoute
   '/settings': typeof MainLayoutSettingsIndexRoute
   '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
@@ -290,6 +308,7 @@ export interface FileRoutesById {
   '/_welcomeLayout/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
   '/_welcomeLayout/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
   '/_welcomeLayout/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/_welcomeLayout/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
   '/_mainLayout/journal/': typeof MainLayoutJournalIndexRoute
   '/_mainLayout/settings/': typeof MainLayoutSettingsIndexRoute
   '/_welcomeLayout/welcome/': typeof WelcomeLayoutWelcomeIndexRoute
@@ -307,6 +326,7 @@ export interface FileRouteTypes {
     | '/welcome/categories'
     | '/welcome/getting-started'
     | '/welcome/journal'
+    | '/welcome/start'
     | '/journal'
     | '/settings'
     | '/welcome'
@@ -321,6 +341,7 @@ export interface FileRouteTypes {
     | '/welcome/categories'
     | '/welcome/getting-started'
     | '/welcome/journal'
+    | '/welcome/start'
     | '/journal'
     | '/settings'
     | '/welcome'
@@ -336,6 +357,7 @@ export interface FileRouteTypes {
     | '/_welcomeLayout/welcome/categories'
     | '/_welcomeLayout/welcome/getting-started'
     | '/_welcomeLayout/welcome/journal'
+    | '/_welcomeLayout/welcome/start'
     | '/_mainLayout/journal/'
     | '/_mainLayout/settings/'
     | '/_welcomeLayout/welcome/'
@@ -390,6 +412,7 @@ export const routeTree = rootRoute
         "/_welcomeLayout/welcome/categories",
         "/_welcomeLayout/welcome/getting-started",
         "/_welcomeLayout/welcome/journal",
+        "/_welcomeLayout/welcome/start",
         "/_welcomeLayout/welcome/"
       ]
     },
@@ -415,6 +438,10 @@ export const routeTree = rootRoute
     },
     "/_welcomeLayout/welcome/journal": {
       "filePath": "_welcomeLayout/welcome.journal.tsx",
+      "parent": "/_welcomeLayout"
+    },
+    "/_welcomeLayout/welcome/start": {
+      "filePath": "_welcomeLayout/welcome.start.tsx",
       "parent": "/_welcomeLayout"
     },
     "/_mainLayout/journal/": {

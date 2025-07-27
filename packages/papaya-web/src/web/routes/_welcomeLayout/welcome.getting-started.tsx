@@ -16,7 +16,7 @@ function GettingStarted() {
   const [value, setValue] = useState<WelcomeState>('new')
   const [showOtherOptions, setShowOtherOptions] = useState(false)
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, newValue: string) => {
+  const handleChange = (_event: React.MouseEvent<HTMLElement>, newValue: string) => {
     setValue(newValue as WelcomeState)
   }
 
@@ -30,7 +30,7 @@ function GettingStarted() {
     return 'skip'
   }, [value])
 
-  const handleFinish = (state: WelcomeState) => {
+  const handleFinish = (_state: WelcomeState) => {
     //
   }
 
