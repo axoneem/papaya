@@ -16,12 +16,9 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
+import { Link, useLocation } from '@tanstack/react-router'
 import { ReactNode, useEffect } from 'react'
 import AppLogo from '../header/AppLogo'
-
-const Link = (props: any) => {
-  return <a {...props} />
-}
 
 interface AppMenuProps {
   view: 'desktop' | 'mobile'
@@ -85,8 +82,7 @@ export default function AppMenu(props: AppMenuProps) {
   const closeMenu = useAppMenuStateStore((state) => state.collapse)
   const openMenu = useAppMenuStateStore((state) => state.expand)
   const closeDrawer = useAppMenuStateStore((state) => state.closeDrawer)
-
-  const pathname = ''
+  const location = useLocation();
 
   useEffect(() => {
     const openState = localStorage.getItem(LOCAL_STORAGE_KEY)
@@ -103,14 +99,14 @@ export default function AppMenu(props: AppMenuProps) {
 
   useEffect(() => {
     closeDrawer()
-  }, [pathname])
+  }, [location.pathname])
 
   const MenuItemList = ({ children }: { children?: ReactNode }) => {
     return (
       <MenuList sx={(theme) => ({ pr: 2, minWidth: theme.spacing(24) })}>
         {children}
         {Object.entries(APP_MENU).map(([slug, menuItem]) => {
-          const selected = menuItem.pathPattern.test(pathname)
+          const selected = location.pathname.startsWith(slug);
           return (
             <MenuItem
               key={slug}
@@ -150,7 +146,7 @@ export default function AppMenu(props: AppMenuProps) {
             <CreateEntryButton expanded={false} view="desktop" />
           </Box>
           {Object.entries(APP_MENU).map(([slug, menuItem]) => {
-            const selected = menuItem.pathPattern.test(pathname)
+            const selected = location.pathname.startsWith(slug);
             return (
               <Tooltip key={slug} title={menuItem.label} placement="right">
                 <IconButton
