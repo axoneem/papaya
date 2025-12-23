@@ -14,5 +14,6 @@
         "source.fixAll": "always",
         "source.organizeImports": "always",
         "source.sortMembers": "always"
-    }
+    },
+    "kiroAgent.configureMCP": "Disabled"
 }
