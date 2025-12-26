@@ -1,19 +1,17 @@
+import AvatarIcon from '@/components/icon/AvatarIcon'
+import { PLACEHOLDER_UNNAMED_JOURNAL_ENTRY_MEMO } from '@/constants/journal'
+import { NotificationsContext } from '@/contexts/NotificationsContext'
+import { useCategories } from '@/hooks/queries/useCategories'
+import { useGetPriceStyle } from '@/hooks/useGetPriceStyle'
+import { Category } from '@/schema/documents/Category'
+import { JournalEntry } from '@/schema/documents/JournalEntry'
+import { Figure } from '@/schema/models/Figure'
+import { useBeginEditingJournalEntry } from '@/store/app/useJournalEntryEditModalState'
+import { getFigureString } from '@/utils/string'
 import { Close, Delete, Edit, MoreVert } from '@mui/icons-material'
 import { Box, ClickAwayListener, Fade, IconButton, Paper, Popper, Stack, Typography } from '@mui/material'
-import AvatarIcon from '@/components/icon/AvatarIcon'
 import { useContext } from 'react'
-import { NotificationsContext } from '@/contexts/NotificationsContext'
 import { JournalEntrySelection } from './JournalEditor'
-import { JournalContext } from '@/contexts/JournalContext'
-import { PLACEHOLDER_UNNAMED_JOURNAL_ENTRY_MEMO } from '@/constants/journal'
-import { useGetPriceStyle } from '@/hooks/useGetPriceStyle'
-import { JournalEntry } from '@/schema/documents/JournalEntry'
-import { Category } from '@/schema/documents/Category'
-import { useBeginEditingJournalEntry } from '@/store/app/useJournalEntryEditModalState'
-import { useCategories } from '@/hooks/queries/useCategories'
-import { calculateNetFigures } from '@/utils/journal'
-import { Figure } from '@/schema/models/Figure'
-import { getFigureString } from '@/utils/string'
 
 export const JOURNAL_ENTRY_LOUPE_SEARCH_PARAM_KEY = 'z'
 
@@ -136,9 +134,6 @@ export default function JournalEntryCard(props: JournalEntryCardProps) {
                     </Stack>
                   </Stack>
                 </Box>
-                {/* <Paper square variant='outlined' sx={{ p: 2, borderLeft: 'none', borderRight: 'none', borderBottom: 'none' }}>
-									Hello
-								</Paper> */}
               </Stack>
             </Paper>
           </Fade>

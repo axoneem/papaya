@@ -1,7 +1,7 @@
 import { NotificationsContext } from '@/contexts/NotificationsContext'
 import { deleteJournalEntry } from '@/database/actions'
 import { getDatabaseClient } from '@/database/client'
-import { Box, Collapse, Divider, Paper, Stack } from '@mui/material'
+import { Box, Collapse, Divider, Grid, Paper, Stack } from '@mui/material'
 import { MouseEvent, useContext, useEffect, useMemo, useState } from 'react'
 import JournalEntryCard from './JournalEntryCard'
 import JournalEntryList from './JournalEntryList'
@@ -12,6 +12,7 @@ import { useFilteredJournalEntries } from '@/hooks/queries/useFilteredJournalEnt
 import { JournalEntry } from '@/schema/documents/JournalEntry'
 import { useBeginEditingJournalEntry } from '@/store/app/useJournalEntryEditModalState'
 import { useSearch } from '@tanstack/react-router'
+import StemEditor from './StemEditor'
 
 export interface JournalEntrySelection {
   entry: JournalEntry | null
@@ -152,63 +153,43 @@ export default function JournalEditor() {
             </Stack>
           </Collapse>
 
-          <Stack
-            component={Paper}
-            sx={(theme) => ({
-              flex: 1,
-              borderTopLeftRadius: theme.spacing(2),
-              borderTopRightRadius: theme.spacing(2),
-              borderBottomLeftRadius: { sm: 0, md: theme.spacing(2) },
-              borderBottomRightRadius: { sm: 0, md: theme.spacing(2) },
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: 0, // Allow flex item to shrink
-            })}>
-            <JournalHeader />
-            <Divider />
-            <Box
-              sx={{
-                flex: 1,
-                overflowY: 'auto',
-                minHeight: 0, // Allow flex item to shrink
-              }}>
-              <JournalEntryList
-                journalRecordGroups={tab === 'journal' ? journalGroups : {}}
-                onClickListItem={handleClickListItem}
-                onDoubleClickListItem={handleDoubleClickListItem}
-              />
-              <Stack component="footer"></Stack>
-            </Box>
-          </Stack>
+          <Grid container spacing={4}>
+            <Grid size={6}>
+              <Stack
+                component={Paper}
+                sx={(theme) => ({
+                  flex: 1,
+                  borderTopLeftRadius: theme.spacing(2),
+                  borderTopRightRadius: theme.spacing(2),
+                  borderBottomLeftRadius: { sm: 0, md: theme.spacing(2) },
+                  borderBottomRightRadius: { sm: 0, md: theme.spacing(2) },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: 0, // Allow flex item to shrink
+                })}>
+                <JournalHeader />
+                <Divider />
+                <Box
+                  sx={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    minHeight: 0, // Allow flex item to shrink
+                  }}>
+                  <JournalEntryList
+                    journalRecordGroups={tab === 'journal' ? journalGroups : {}}
+                    onClickListItem={handleClickListItem}
+                    onDoubleClickListItem={handleDoubleClickListItem}
+                  />
+                  <Stack component="footer"></Stack>
+                </Box>
+              </Stack>
+            </Grid>
+            <Grid size={6}>
+              <StemEditor />
+            </Grid>
+          </Grid>
+
         </Stack>
-        {/* <Stack
-					component={Paper}
-					sx={(theme) => ({
-						borderTopLeftRadius: theme.spacing(2),
-						borderTopRightRadius: theme.spacing(2),
-						overflow: 'hidden',
-						flex: 1,
-					})}>
-					<Stack component='header'>
-						<Stack
-							direction="row"
-							justifyContent="space-between"
-							sx={{ flex: 0, py: 1, px: 2 }}
-							alignItems="center"
-							gap={1}
-						>
-							<Typography>Analysis</Typography>
-							<IconButton><Close /></IconButton>
-						</Stack>
-					</Stack>
-					<Divider />
-					<Box sx={{
-						flex: 1,
-						overflowY: 'auto',
-					}}>
-						
-					</Box>
-				</Stack> */}
       </Stack>
     </>
   )

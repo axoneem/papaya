@@ -8,238 +8,302 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeLayoutRouteImport } from './routes/_welcomeLayout'
+import { Route as MainLayoutRouteImport } from './routes/_mainLayout'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainLayoutCategoriesRouteImport } from './routes/_mainLayout/categories'
+import { Route as MainLayoutAccountsRouteImport } from './routes/_mainLayout/accounts'
+import { Route as WelcomeLayoutWelcomeIndexRouteImport } from './routes/_welcomeLayout/welcome.index'
+import { Route as MainLayoutSettingsIndexRouteImport } from './routes/_mainLayout/settings.index'
+import { Route as MainLayoutJournalIndexRouteImport } from './routes/_mainLayout/journal.index'
+import { Route as WelcomeLayoutWelcomeStartRouteImport } from './routes/_welcomeLayout/welcome.start'
+import { Route as WelcomeLayoutWelcomeJournalRouteImport } from './routes/_welcomeLayout/welcome.journal'
+import { Route as WelcomeLayoutWelcomeGettingStartedRouteImport } from './routes/_welcomeLayout/welcome.getting-started'
+import { Route as WelcomeLayoutWelcomeCategoriesRouteImport } from './routes/_welcomeLayout/welcome.categories'
+import { Route as MainLayoutSettingsSectionRouteImport } from './routes/_mainLayout/settings.$section'
+import { Route as MainLayoutJournalViewSplatRouteImport } from './routes/_mainLayout/journal.$view.$'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as WelcomeLayoutImport } from './routes/_welcomeLayout'
-import { Route as MainLayoutImport } from './routes/_mainLayout'
-import { Route as IndexImport } from './routes/index'
-import { Route as MainLayoutTestImport } from './routes/_mainLayout/test'
-import { Route as MainLayoutCategoriesImport } from './routes/_mainLayout/categories'
-import { Route as MainLayoutAccountsImport } from './routes/_mainLayout/accounts'
-import { Route as WelcomeLayoutWelcomeIndexImport } from './routes/_welcomeLayout/welcome.index'
-import { Route as MainLayoutSettingsIndexImport } from './routes/_mainLayout/settings.index'
-import { Route as MainLayoutJournalIndexImport } from './routes/_mainLayout/journal.index'
-import { Route as WelcomeLayoutWelcomeStartImport } from './routes/_welcomeLayout/welcome.start'
-import { Route as WelcomeLayoutWelcomeJournalImport } from './routes/_welcomeLayout/welcome.journal'
-import { Route as WelcomeLayoutWelcomeGettingStartedImport } from './routes/_welcomeLayout/welcome.getting-started'
-import { Route as WelcomeLayoutWelcomeCategoriesImport } from './routes/_welcomeLayout/welcome.categories'
-import { Route as MainLayoutSettingsSectionImport } from './routes/_mainLayout/settings.$section'
-import { Route as MainLayoutJournalViewSplatImport } from './routes/_mainLayout/journal.$view.$'
-
-// Create/Update Routes
-
-const WelcomeLayoutRoute = WelcomeLayoutImport.update({
+const WelcomeLayoutRoute = WelcomeLayoutRouteImport.update({
   id: '/_welcomeLayout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MainLayoutRoute = MainLayoutImport.update({
+const MainLayoutRoute = MainLayoutRouteImport.update({
   id: '/_mainLayout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MainLayoutTestRoute = MainLayoutTestImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => MainLayoutRoute,
-} as any)
-
-const MainLayoutCategoriesRoute = MainLayoutCategoriesImport.update({
+const MainLayoutCategoriesRoute = MainLayoutCategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
   getParentRoute: () => MainLayoutRoute,
 } as any)
-
-const MainLayoutAccountsRoute = MainLayoutAccountsImport.update({
+const MainLayoutAccountsRoute = MainLayoutAccountsRouteImport.update({
   id: '/accounts',
   path: '/accounts',
   getParentRoute: () => MainLayoutRoute,
 } as any)
-
-const WelcomeLayoutWelcomeIndexRoute = WelcomeLayoutWelcomeIndexImport.update({
-  id: '/welcome/',
-  path: '/welcome/',
-  getParentRoute: () => WelcomeLayoutRoute,
-} as any)
-
-const MainLayoutSettingsIndexRoute = MainLayoutSettingsIndexImport.update({
+const WelcomeLayoutWelcomeIndexRoute =
+  WelcomeLayoutWelcomeIndexRouteImport.update({
+    id: '/welcome/',
+    path: '/welcome/',
+    getParentRoute: () => WelcomeLayoutRoute,
+  } as any)
+const MainLayoutSettingsIndexRoute = MainLayoutSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
   getParentRoute: () => MainLayoutRoute,
 } as any)
-
-const MainLayoutJournalIndexRoute = MainLayoutJournalIndexImport.update({
+const MainLayoutJournalIndexRoute = MainLayoutJournalIndexRouteImport.update({
   id: '/journal/',
   path: '/journal/',
   getParentRoute: () => MainLayoutRoute,
 } as any)
-
-const WelcomeLayoutWelcomeStartRoute = WelcomeLayoutWelcomeStartImport.update({
-  id: '/welcome/start',
-  path: '/welcome/start',
-  getParentRoute: () => WelcomeLayoutRoute,
-} as any)
-
+const WelcomeLayoutWelcomeStartRoute =
+  WelcomeLayoutWelcomeStartRouteImport.update({
+    id: '/welcome/start',
+    path: '/welcome/start',
+    getParentRoute: () => WelcomeLayoutRoute,
+  } as any)
 const WelcomeLayoutWelcomeJournalRoute =
-  WelcomeLayoutWelcomeJournalImport.update({
+  WelcomeLayoutWelcomeJournalRouteImport.update({
     id: '/welcome/journal',
     path: '/welcome/journal',
     getParentRoute: () => WelcomeLayoutRoute,
   } as any)
-
 const WelcomeLayoutWelcomeGettingStartedRoute =
-  WelcomeLayoutWelcomeGettingStartedImport.update({
+  WelcomeLayoutWelcomeGettingStartedRouteImport.update({
     id: '/welcome/getting-started',
     path: '/welcome/getting-started',
     getParentRoute: () => WelcomeLayoutRoute,
   } as any)
-
 const WelcomeLayoutWelcomeCategoriesRoute =
-  WelcomeLayoutWelcomeCategoriesImport.update({
+  WelcomeLayoutWelcomeCategoriesRouteImport.update({
     id: '/welcome/categories',
     path: '/welcome/categories',
     getParentRoute: () => WelcomeLayoutRoute,
   } as any)
-
-const MainLayoutSettingsSectionRoute = MainLayoutSettingsSectionImport.update({
-  id: '/settings/$section',
-  path: '/settings/$section',
-  getParentRoute: () => MainLayoutRoute,
-} as any)
-
-const MainLayoutJournalViewSplatRoute = MainLayoutJournalViewSplatImport.update(
-  {
+const MainLayoutSettingsSectionRoute =
+  MainLayoutSettingsSectionRouteImport.update({
+    id: '/settings/$section',
+    path: '/settings/$section',
+    getParentRoute: () => MainLayoutRoute,
+  } as any)
+const MainLayoutJournalViewSplatRoute =
+  MainLayoutJournalViewSplatRouteImport.update({
     id: '/journal/$view/$',
     path: '/journal/$view/$',
     getParentRoute: () => MainLayoutRoute,
-  } as any,
-)
+  } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/accounts': typeof MainLayoutAccountsRoute
+  '/categories': typeof MainLayoutCategoriesRoute
+  '/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
+  '/journal': typeof MainLayoutJournalIndexRoute
+  '/settings': typeof MainLayoutSettingsIndexRoute
+  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
+  '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/accounts': typeof MainLayoutAccountsRoute
+  '/categories': typeof MainLayoutCategoriesRoute
+  '/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
+  '/journal': typeof MainLayoutJournalIndexRoute
+  '/settings': typeof MainLayoutSettingsIndexRoute
+  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
+  '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_mainLayout': typeof MainLayoutRouteWithChildren
+  '/_welcomeLayout': typeof WelcomeLayoutRouteWithChildren
+  '/_mainLayout/accounts': typeof MainLayoutAccountsRoute
+  '/_mainLayout/categories': typeof MainLayoutCategoriesRoute
+  '/_mainLayout/settings/$section': typeof MainLayoutSettingsSectionRoute
+  '/_welcomeLayout/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
+  '/_welcomeLayout/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
+  '/_welcomeLayout/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
+  '/_welcomeLayout/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
+  '/_mainLayout/journal/': typeof MainLayoutJournalIndexRoute
+  '/_mainLayout/settings/': typeof MainLayoutSettingsIndexRoute
+  '/_welcomeLayout/welcome/': typeof WelcomeLayoutWelcomeIndexRoute
+  '/_mainLayout/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/accounts'
+    | '/categories'
+    | '/settings/$section'
+    | '/welcome/categories'
+    | '/welcome/getting-started'
+    | '/welcome/journal'
+    | '/welcome/start'
+    | '/journal'
+    | '/settings'
+    | '/welcome'
+    | '/journal/$view/$'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/accounts'
+    | '/categories'
+    | '/settings/$section'
+    | '/welcome/categories'
+    | '/welcome/getting-started'
+    | '/welcome/journal'
+    | '/welcome/start'
+    | '/journal'
+    | '/settings'
+    | '/welcome'
+    | '/journal/$view/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/_mainLayout'
+    | '/_welcomeLayout'
+    | '/_mainLayout/accounts'
+    | '/_mainLayout/categories'
+    | '/_mainLayout/settings/$section'
+    | '/_welcomeLayout/welcome/categories'
+    | '/_welcomeLayout/welcome/getting-started'
+    | '/_welcomeLayout/welcome/journal'
+    | '/_welcomeLayout/welcome/start'
+    | '/_mainLayout/journal/'
+    | '/_mainLayout/settings/'
+    | '/_welcomeLayout/welcome/'
+    | '/_mainLayout/journal/$view/$'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  MainLayoutRoute: typeof MainLayoutRouteWithChildren
+  WelcomeLayoutRoute: typeof WelcomeLayoutRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+    '/_welcomeLayout': {
+      id: '/_welcomeLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WelcomeLayoutRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_mainLayout': {
       id: '/_mainLayout'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof MainLayoutImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MainLayoutRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_welcomeLayout': {
-      id: '/_welcomeLayout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WelcomeLayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/_mainLayout/accounts': {
-      id: '/_mainLayout/accounts'
-      path: '/accounts'
-      fullPath: '/accounts'
-      preLoaderRoute: typeof MainLayoutAccountsImport
-      parentRoute: typeof MainLayoutImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_mainLayout/categories': {
       id: '/_mainLayout/categories'
       path: '/categories'
       fullPath: '/categories'
-      preLoaderRoute: typeof MainLayoutCategoriesImport
-      parentRoute: typeof MainLayoutImport
+      preLoaderRoute: typeof MainLayoutCategoriesRouteImport
+      parentRoute: typeof MainLayoutRoute
     }
-    '/_mainLayout/test': {
-      id: '/_mainLayout/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof MainLayoutTestImport
-      parentRoute: typeof MainLayoutImport
-    }
-    '/_mainLayout/settings/$section': {
-      id: '/_mainLayout/settings/$section'
-      path: '/settings/$section'
-      fullPath: '/settings/$section'
-      preLoaderRoute: typeof MainLayoutSettingsSectionImport
-      parentRoute: typeof MainLayoutImport
-    }
-    '/_welcomeLayout/welcome/categories': {
-      id: '/_welcomeLayout/welcome/categories'
-      path: '/welcome/categories'
-      fullPath: '/welcome/categories'
-      preLoaderRoute: typeof WelcomeLayoutWelcomeCategoriesImport
-      parentRoute: typeof WelcomeLayoutImport
-    }
-    '/_welcomeLayout/welcome/getting-started': {
-      id: '/_welcomeLayout/welcome/getting-started'
-      path: '/welcome/getting-started'
-      fullPath: '/welcome/getting-started'
-      preLoaderRoute: typeof WelcomeLayoutWelcomeGettingStartedImport
-      parentRoute: typeof WelcomeLayoutImport
-    }
-    '/_welcomeLayout/welcome/journal': {
-      id: '/_welcomeLayout/welcome/journal'
-      path: '/welcome/journal'
-      fullPath: '/welcome/journal'
-      preLoaderRoute: typeof WelcomeLayoutWelcomeJournalImport
-      parentRoute: typeof WelcomeLayoutImport
-    }
-    '/_welcomeLayout/welcome/start': {
-      id: '/_welcomeLayout/welcome/start'
-      path: '/welcome/start'
-      fullPath: '/welcome/start'
-      preLoaderRoute: typeof WelcomeLayoutWelcomeStartImport
-      parentRoute: typeof WelcomeLayoutImport
-    }
-    '/_mainLayout/journal/': {
-      id: '/_mainLayout/journal/'
-      path: '/journal'
-      fullPath: '/journal'
-      preLoaderRoute: typeof MainLayoutJournalIndexImport
-      parentRoute: typeof MainLayoutImport
-    }
-    '/_mainLayout/settings/': {
-      id: '/_mainLayout/settings/'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof MainLayoutSettingsIndexImport
-      parentRoute: typeof MainLayoutImport
+    '/_mainLayout/accounts': {
+      id: '/_mainLayout/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof MainLayoutAccountsRouteImport
+      parentRoute: typeof MainLayoutRoute
     }
     '/_welcomeLayout/welcome/': {
       id: '/_welcomeLayout/welcome/'
       path: '/welcome'
       fullPath: '/welcome'
-      preLoaderRoute: typeof WelcomeLayoutWelcomeIndexImport
-      parentRoute: typeof WelcomeLayoutImport
+      preLoaderRoute: typeof WelcomeLayoutWelcomeIndexRouteImport
+      parentRoute: typeof WelcomeLayoutRoute
+    }
+    '/_mainLayout/settings/': {
+      id: '/_mainLayout/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainLayoutSettingsIndexRouteImport
+      parentRoute: typeof MainLayoutRoute
+    }
+    '/_mainLayout/journal/': {
+      id: '/_mainLayout/journal/'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof MainLayoutJournalIndexRouteImport
+      parentRoute: typeof MainLayoutRoute
+    }
+    '/_welcomeLayout/welcome/start': {
+      id: '/_welcomeLayout/welcome/start'
+      path: '/welcome/start'
+      fullPath: '/welcome/start'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeStartRouteImport
+      parentRoute: typeof WelcomeLayoutRoute
+    }
+    '/_welcomeLayout/welcome/journal': {
+      id: '/_welcomeLayout/welcome/journal'
+      path: '/welcome/journal'
+      fullPath: '/welcome/journal'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeJournalRouteImport
+      parentRoute: typeof WelcomeLayoutRoute
+    }
+    '/_welcomeLayout/welcome/getting-started': {
+      id: '/_welcomeLayout/welcome/getting-started'
+      path: '/welcome/getting-started'
+      fullPath: '/welcome/getting-started'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeGettingStartedRouteImport
+      parentRoute: typeof WelcomeLayoutRoute
+    }
+    '/_welcomeLayout/welcome/categories': {
+      id: '/_welcomeLayout/welcome/categories'
+      path: '/welcome/categories'
+      fullPath: '/welcome/categories'
+      preLoaderRoute: typeof WelcomeLayoutWelcomeCategoriesRouteImport
+      parentRoute: typeof WelcomeLayoutRoute
+    }
+    '/_mainLayout/settings/$section': {
+      id: '/_mainLayout/settings/$section'
+      path: '/settings/$section'
+      fullPath: '/settings/$section'
+      preLoaderRoute: typeof MainLayoutSettingsSectionRouteImport
+      parentRoute: typeof MainLayoutRoute
     }
     '/_mainLayout/journal/$view/$': {
       id: '/_mainLayout/journal/$view/$'
       path: '/journal/$view/$'
       fullPath: '/journal/$view/$'
-      preLoaderRoute: typeof MainLayoutJournalViewSplatImport
-      parentRoute: typeof MainLayoutImport
+      preLoaderRoute: typeof MainLayoutJournalViewSplatRouteImport
+      parentRoute: typeof MainLayoutRoute
     }
   }
 }
 
-// Create and export the route tree
-
 interface MainLayoutRouteChildren {
   MainLayoutAccountsRoute: typeof MainLayoutAccountsRoute
   MainLayoutCategoriesRoute: typeof MainLayoutCategoriesRoute
-  MainLayoutTestRoute: typeof MainLayoutTestRoute
   MainLayoutSettingsSectionRoute: typeof MainLayoutSettingsSectionRoute
   MainLayoutJournalIndexRoute: typeof MainLayoutJournalIndexRoute
   MainLayoutSettingsIndexRoute: typeof MainLayoutSettingsIndexRoute
@@ -249,7 +313,6 @@ interface MainLayoutRouteChildren {
 const MainLayoutRouteChildren: MainLayoutRouteChildren = {
   MainLayoutAccountsRoute: MainLayoutAccountsRoute,
   MainLayoutCategoriesRoute: MainLayoutCategoriesRoute,
-  MainLayoutTestRoute: MainLayoutTestRoute,
   MainLayoutSettingsSectionRoute: MainLayoutSettingsSectionRoute,
   MainLayoutJournalIndexRoute: MainLayoutJournalIndexRoute,
   MainLayoutSettingsIndexRoute: MainLayoutSettingsIndexRoute,
@@ -281,212 +344,11 @@ const WelcomeLayoutRouteWithChildren = WelcomeLayoutRoute._addFileChildren(
   WelcomeLayoutRouteChildren,
 )
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof WelcomeLayoutRouteWithChildren
-  '/accounts': typeof MainLayoutAccountsRoute
-  '/categories': typeof MainLayoutCategoriesRoute
-  '/test': typeof MainLayoutTestRoute
-  '/settings/$section': typeof MainLayoutSettingsSectionRoute
-  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
-  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
-  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
-  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
-  '/journal': typeof MainLayoutJournalIndexRoute
-  '/settings': typeof MainLayoutSettingsIndexRoute
-  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
-  '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof WelcomeLayoutRouteWithChildren
-  '/accounts': typeof MainLayoutAccountsRoute
-  '/categories': typeof MainLayoutCategoriesRoute
-  '/test': typeof MainLayoutTestRoute
-  '/settings/$section': typeof MainLayoutSettingsSectionRoute
-  '/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
-  '/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
-  '/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
-  '/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
-  '/journal': typeof MainLayoutJournalIndexRoute
-  '/settings': typeof MainLayoutSettingsIndexRoute
-  '/welcome': typeof WelcomeLayoutWelcomeIndexRoute
-  '/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_mainLayout': typeof MainLayoutRouteWithChildren
-  '/_welcomeLayout': typeof WelcomeLayoutRouteWithChildren
-  '/_mainLayout/accounts': typeof MainLayoutAccountsRoute
-  '/_mainLayout/categories': typeof MainLayoutCategoriesRoute
-  '/_mainLayout/test': typeof MainLayoutTestRoute
-  '/_mainLayout/settings/$section': typeof MainLayoutSettingsSectionRoute
-  '/_welcomeLayout/welcome/categories': typeof WelcomeLayoutWelcomeCategoriesRoute
-  '/_welcomeLayout/welcome/getting-started': typeof WelcomeLayoutWelcomeGettingStartedRoute
-  '/_welcomeLayout/welcome/journal': typeof WelcomeLayoutWelcomeJournalRoute
-  '/_welcomeLayout/welcome/start': typeof WelcomeLayoutWelcomeStartRoute
-  '/_mainLayout/journal/': typeof MainLayoutJournalIndexRoute
-  '/_mainLayout/settings/': typeof MainLayoutSettingsIndexRoute
-  '/_welcomeLayout/welcome/': typeof WelcomeLayoutWelcomeIndexRoute
-  '/_mainLayout/journal/$view/$': typeof MainLayoutJournalViewSplatRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/accounts'
-    | '/categories'
-    | '/test'
-    | '/settings/$section'
-    | '/welcome/categories'
-    | '/welcome/getting-started'
-    | '/welcome/journal'
-    | '/welcome/start'
-    | '/journal'
-    | '/settings'
-    | '/welcome'
-    | '/journal/$view/$'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/accounts'
-    | '/categories'
-    | '/test'
-    | '/settings/$section'
-    | '/welcome/categories'
-    | '/welcome/getting-started'
-    | '/welcome/journal'
-    | '/welcome/start'
-    | '/journal'
-    | '/settings'
-    | '/welcome'
-    | '/journal/$view/$'
-  id:
-    | '__root__'
-    | '/'
-    | '/_mainLayout'
-    | '/_welcomeLayout'
-    | '/_mainLayout/accounts'
-    | '/_mainLayout/categories'
-    | '/_mainLayout/test'
-    | '/_mainLayout/settings/$section'
-    | '/_welcomeLayout/welcome/categories'
-    | '/_welcomeLayout/welcome/getting-started'
-    | '/_welcomeLayout/welcome/journal'
-    | '/_welcomeLayout/welcome/start'
-    | '/_mainLayout/journal/'
-    | '/_mainLayout/settings/'
-    | '/_welcomeLayout/welcome/'
-    | '/_mainLayout/journal/$view/$'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  MainLayoutRoute: typeof MainLayoutRouteWithChildren
-  WelcomeLayoutRoute: typeof WelcomeLayoutRouteWithChildren
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainLayoutRoute: MainLayoutRouteWithChildren,
   WelcomeLayoutRoute: WelcomeLayoutRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_mainLayout",
-        "/_welcomeLayout"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_mainLayout": {
-      "filePath": "_mainLayout.tsx",
-      "children": [
-        "/_mainLayout/accounts",
-        "/_mainLayout/categories",
-        "/_mainLayout/test",
-        "/_mainLayout/settings/$section",
-        "/_mainLayout/journal/",
-        "/_mainLayout/settings/",
-        "/_mainLayout/journal/$view/$"
-      ]
-    },
-    "/_welcomeLayout": {
-      "filePath": "_welcomeLayout.tsx",
-      "children": [
-        "/_welcomeLayout/welcome/categories",
-        "/_welcomeLayout/welcome/getting-started",
-        "/_welcomeLayout/welcome/journal",
-        "/_welcomeLayout/welcome/start",
-        "/_welcomeLayout/welcome/"
-      ]
-    },
-    "/_mainLayout/accounts": {
-      "filePath": "_mainLayout/accounts.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_mainLayout/categories": {
-      "filePath": "_mainLayout/categories.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_mainLayout/test": {
-      "filePath": "_mainLayout/test.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_mainLayout/settings/$section": {
-      "filePath": "_mainLayout/settings.$section.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_welcomeLayout/welcome/categories": {
-      "filePath": "_welcomeLayout/welcome.categories.tsx",
-      "parent": "/_welcomeLayout"
-    },
-    "/_welcomeLayout/welcome/getting-started": {
-      "filePath": "_welcomeLayout/welcome.getting-started.tsx",
-      "parent": "/_welcomeLayout"
-    },
-    "/_welcomeLayout/welcome/journal": {
-      "filePath": "_welcomeLayout/welcome.journal.tsx",
-      "parent": "/_welcomeLayout"
-    },
-    "/_welcomeLayout/welcome/start": {
-      "filePath": "_welcomeLayout/welcome.start.tsx",
-      "parent": "/_welcomeLayout"
-    },
-    "/_mainLayout/journal/": {
-      "filePath": "_mainLayout/journal.index.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_mainLayout/settings/": {
-      "filePath": "_mainLayout/settings.index.tsx",
-      "parent": "/_mainLayout"
-    },
-    "/_welcomeLayout/welcome/": {
-      "filePath": "_welcomeLayout/welcome.index.tsx",
-      "parent": "/_welcomeLayout"
-    },
-    "/_mainLayout/journal/$view/$": {
-      "filePath": "_mainLayout/journal.$view.$.tsx",
-      "parent": "/_mainLayout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
