@@ -8,8 +8,7 @@ import PouchDBFind from 'pouchdb-find';
 
 PouchDB.plugin(PouchDBFind)
 
-let db: PouchDB.Database | null = null
-
+let dbClient: PouchDB.Database | null = null
 
 type PapayaDesignDoc = {
   '_id': typeof POUCH_DB_DESIGN_DOC_ID;
@@ -43,55 +42,41 @@ const designDoc: PapayaDesignDoc = {
 
 const initializeDatabaseClient = async () => {
   console.log('initializing database client');
-  db = new PouchDB(POUCH_DB_NAME)
+  const db = new PouchDB(POUCH_DB_NAME)
 
   // Load the design doc from the database
-  let existingDesignDoc: OrmDocument<PapayaDesignDoc> | undefined;
+  let existingDesignDoc: OrmDocument<PapayaDesignDoc> | undefined = undefined;
 
   await db.get(POUCH_DB_DESIGN_DOC_ID).then((doc) => {
-    console.log('found: ', doc);
     if (doc && '_id' in doc) {
       existingDesignDoc = doc as unknown as OrmDocument<PapayaDesignDoc>;
-      console.log('existing design doc: ', existingDesignDoc);
     }
-  }).catch((err) => {
-    console.error('error getting design doc: ', err);
+  }).catch((err: PouchDB.Core.Error) => {
+    if (err.status !== 404) {
+      console.error('error getting design doc: ', err);
+    }
   });
 
-  if (existingDesignDoc) {
-    if ('@version' in existingDesignDoc) {
-      if (existingDesignDoc['@version'] < designDoc['@version']) {
-        console.log('design doc needs to be updated');
-        await db.put({
-          ...existingDesignDoc,
-          ...designDoc,
-        }).then(() => {
-          console.log('design doc updated');
-        }).catch((err) => {
-          console.error('error putting design doc: ', err);
-        });
-      }
-    } else {
-      console.log('design doc has no version');
-      await db.remove(existingDesignDoc).catch((err) => {
-        console.error('error removing design doc: ', err);
-      });
-    }
-  }
   if (!existingDesignDoc) {
-    await db.put(designDoc).then((doc) => {
-      console.log('design doc updated');
+    await db.put(designDoc).catch((err) => {
+      console.error('error creating design doc: ', err);
+    });
+  } else if (!('version' in existingDesignDoc) || existingDesignDoc.version < designDoc.version) {
+    await db.put({
+      ...existingDesignDoc,
+      ...designDoc,
     }).catch((err) => {
-      console.error('error putting design doc: ', err);
+      console.error('error updating design doc: ', err);
     });
   }
 
-  return db;
+  dbClient = db;
+  return dbClient;
 }
 
 export const getDatabaseClient = async () => {
-  if (!db) {
+  if (!dbClient) {
     return initializeDatabaseClient();
   }
-  return db
+  return dbClient;
 }
