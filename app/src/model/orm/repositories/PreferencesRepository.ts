@@ -24,12 +24,8 @@ export class PreferencesRepository extends Repository<"Preferences"> {
 
   async getPreferences(): Promise<OrmDocument<Preferences> | undefined> {
     const db = await this.getDb();
-    const result = await db.find({
-      selector: {
-        _id: PREFERENCES_ID,
-      },
-    });
-    return result.docs[0] as OrmDocument<Preferences> | undefined;
+    const result = await db.get<Preferences>(PREFERENCES_ID);
+    return result as OrmDocument<Preferences> | undefined;
   }
 
   async getOrCreatePreferences(): Promise<OrmDocument<Preferences>> {

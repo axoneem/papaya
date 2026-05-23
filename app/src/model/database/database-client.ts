@@ -4,9 +4,6 @@ import { POUCH_DB_DESIGN_DOC_ID, POUCH_DB_NAME } from '@/constants/orm-constants
 import { DatabaseView, databaseViews, PapayaDatabaseView } from '@/model/database/database-views';
 import { OrmDocument } from '@/model/types/orm-types';
 import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
-
-PouchDB.plugin(PouchDBFind)
 
 let dbClientPromise: Promise<PouchDB.Database> | null = null
 

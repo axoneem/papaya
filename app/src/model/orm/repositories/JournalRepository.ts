@@ -35,11 +35,7 @@ export class JournalRepository extends Repository<"Journal"> {
   }
 
   async listAllJournals(): Promise<OrmDocument<Journal>[]> {
-    const db = await this.getDb();
-    const result = await db.find({
-      selector: { kind: this.schema.shape.kind.value },
-    });
-    return result.docs as OrmDocument<Journal>[];
+    throw new Error("Not implemented");
   }
 
   async getLastOpened() {

@@ -22,7 +22,6 @@
     "dayjs": "^1.11.20",
     "next": "^16.2.6",
     "pouchdb": "^9.0.0",
-    "pouchdb-find": "^9.0.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-hook-form": "^7.76.1",

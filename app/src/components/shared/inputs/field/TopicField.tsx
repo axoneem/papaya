@@ -85,15 +85,15 @@ export default function TopicField({
           size={size}
           slotProps={{
             htmlInput: {
-              ...params.inputProps,
+              ...params.slotProps.htmlInput,
               autoComplete: 'new-password',
             },
             input: {
-              ...params.InputProps,
+              ...params.slotProps.input,
               startAdornment: (
                 <>
                   <InputAdornment position="start">#</InputAdornment>
-                  {params.InputProps.startAdornment}
+                  {params.slotProps.input.startAdornment}
                 </>
               ),
             },
