@@ -8,7 +8,7 @@ import PouchDBFind from 'pouchdb-find';
 
 PouchDB.plugin(PouchDBFind)
 
-let dbClient: PouchDB.Database | null = null
+let dbClientPromise: Promise<PouchDB.Database> | null = null
 
 type PapayaDesignDoc = {
   '_id': typeof POUCH_DB_DESIGN_DOC_ID;
@@ -70,13 +70,15 @@ const initializeDatabaseClient = async () => {
     });
   }
 
-  dbClient = db;
-  return dbClient;
+  return db;
 }
 
-export const getDatabaseClient = async () => {
-  if (!dbClient) {
-    return initializeDatabaseClient();
+export function getDatabaseClient(): Promise<PouchDB.Database> {
+  if (!dbClientPromise) {
+    dbClientPromise = initializeDatabaseClient().catch((err) => {
+      dbClientPromise = null;
+      throw err;
+    });
   }
-  return dbClient;
+  return dbClientPromise;
 }
