@@ -1,9 +1,9 @@
 import { Badge, Button, Stack, Typography } from '@mui/material';
 
+import LedgerDateNavigation from '@/components/features/journal-editor/LedgerDateNavigation';
 import { JournalEntryEditorContext } from '@/model/contexts/JournalEntryEditorContext';
 import { Add } from '@mui/icons-material';
 import { useContext, useRef, useState } from 'react';
-import LedgerDateNavigation from '../navigation/LedgerDateNavigation';
 
 export default function JournalToolbar() {
   const [showFiltersMenu, setShowFiltersMenu] = useState<boolean>(false)

@@ -5,15 +5,8 @@ import { JournalEntrySchema, TransactionSchema } from "./resource-schemas";
 import { createResourceFormSchema } from "./template-schemas";
 
 export const TransactionFormSchema = createResourceFormSchema(
-  TransactionSchema
-  // .pick({
-  //   "@version": true,
-  //   rid: true,
-  //   kind: true,
-  //   updatedAt: true,
-  //   parent: true
-  // })
-  , {
+  TransactionSchema,
+  {
     amountString: z.string(),
     topics: z.array(z.string()),
     convertedFrom: PriceConversionSchema.nullish(),
@@ -26,20 +19,14 @@ export const TransactionFormSchema = createResourceFormSchema(
 );
 
 export const JournalEntryFormSchema = createResourceFormSchema(
-  JournalEntrySchema
-  // .pick({
-  //   "@version": true,
-  //   rid: true,
-  //   kind: true,
-  //   updatedAt: true,
-  //   journalRid: true,
-  // })
-  , {
-    date: z.iso.date().nullish(),
+  JournalEntrySchema,
+  {
+    date: z.iso.date(),
     time: z.iso.time().nullish(),
     memo: z.string().nullish(),
     transactions: z.record(TransactionRidSchema, TransactionFormSchema),
-  });
+  }
+);
 
 export type TransactionForm = z.infer<typeof TransactionFormSchema>;
 export type JournalEntryForm = z.infer<typeof JournalEntryFormSchema>;

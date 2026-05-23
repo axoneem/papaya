@@ -36,10 +36,11 @@ export const TransactionToFormCodec = z.codec(
 );
 
 export const JournalEntryToFormCodec = z.codec(
-  JournalEntrySchema,
+  JournalEntrySchema.loose(),
   JournalEntryFormSchema,
   {
     decode: (journalEntry: JournalEntry): JournalEntryForm => {
+      console.log('beginning to decode:', journalEntry);
       return {
         '@source': journalEntry,
         date: journalEntry.date,

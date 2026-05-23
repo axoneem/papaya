@@ -74,7 +74,7 @@ export const JournalEntrySchema = createResourceSchema("JournalEntry", {
   journalRid: JournalRidSchema,
   transactions: z.record(TransactionRidSchema, TransactionSchema),
   memo: z.string().nullish(),
-  date: z.iso.date().nullish(),
+  date: z.iso.date(),
   time: z.iso.time().nullish(),
 });
 

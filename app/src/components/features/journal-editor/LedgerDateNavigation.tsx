@@ -1,8 +1,8 @@
-import KeyboardShortcut from '@/components/display/KeyboardShortcut'
-import { KeyboardActionName } from '@/constants/keyboard'
+import KeyboardShortcut from '@/components/shared/display/KeyboardShortcut'
+import { KeyboardActionName } from '@/constants/keyboard-constants'
 import { JournalSliceContext } from '@/model/contexts/JournalSliceContext'
 import { CalendarResolution, CalendarResolutionSchema } from '@/model/schema/aggregate-schemas'
-import { getAbsoluteDatesFromCalendarRange } from '@/utils/date'
+import { getAbsoluteDatesFromCalendarRange } from '@/utils/date-utils'
 import { ArrowBack, ArrowDropDown, ArrowForward, CalendarToday } from '@mui/icons-material'
 import {
   Button,

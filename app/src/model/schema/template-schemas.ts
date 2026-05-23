@@ -11,8 +11,9 @@ import {
 export type ResourceBaseShape<N extends PapayaResourceNamespace> = {
   rid: z.ZodTemplateLiteral<PapayaResourceRid<N>>;
   kind: z.ZodLiteral<PapayaResourceKind<N>>;
-  updatedAt: z.ZodString;
-  "@version": z.ZodNumber;
+  createdAt: z.ZodNullable<z.ZodString>;
+  updatedAt: z.ZodNullable<z.ZodString>;
+  '@version': z.ZodNumber;
 };
 
 export type ResourceSchema<
@@ -30,20 +31,29 @@ export const createResourceSchema = <
   return z.object({
     rid: ridSchemaFromNamespace(namespace),
     kind: kindSchemaFromNamespace(namespace),
-    updatedAt: z.string(),
-    "@version": z.number(),
+    createdAt: z.string().nullable(),
+    updatedAt: z.string().nullable(),
+    '@version': z.number(),
   }).extend(shape) satisfies ResourceSchema<N, S>;
 };
 
 export const createResourceFormSchema = <
-  S extends z.ZodObject,
+  S extends z.ZodRawShape,
   F extends z.ZodRawShape
 >(
-  sourceSchema: S,
+  sourceSchema: z.ZodObject<S>,
   form: F,
 ) => {
   return z.object({
     ...form,
-    '@source': sourceSchema,
+    '@source': sourceSchema.loose(),
   });
+}
+
+export const _createOptionalOrmDocumentSchema = <S extends z.ZodRawShape>(schema: z.ZodObject<S>) => {
+  return schema.or(z.object({
+    ...schema.shape,
+    _id: 'rid' in schema.shape ? schema.shape.rid : z.string(),
+    _rev: z.string().optional(),
+  }))
 }
