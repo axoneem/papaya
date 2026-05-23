@@ -74,7 +74,13 @@ export default function SyncHeaderWidget() {
         }}>
         <SyncWidget />
       </Popover>
-      <Stack direction="row" alignItems="center" gap={0} ref={buttonAnchorRef}>
+      <Stack
+        direction="row"
+        ref={buttonAnchorRef}
+        sx={{
+          gap: 0,
+          alignItems: 'center'
+        }}>
         <Grow in={showButton}>
           <Tooltip title={syncIndication.title}>
             <IconButton
@@ -105,5 +111,5 @@ export default function SyncHeaderWidget() {
         )}
       </Stack>
     </>
-  )
+  );
 }

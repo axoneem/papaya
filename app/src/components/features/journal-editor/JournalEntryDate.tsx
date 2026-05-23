@@ -18,14 +18,14 @@ export default function LedgerEntryDate(props: LedgerEntryDateProps) {
       component={Button}
       onClick={onClick}
       direction="row"
-      alignItems="center"
-      gap={1.5}
       sx={{
+        gap: 1.5,
         py: 0,
         px: 2,
         color: isToday ? undefined : 'unset',
         my: 0,
         ml: 1,
+        alignItems: 'center'
       }}>
       <Avatar
         sx={(theme) => ({
@@ -45,5 +45,5 @@ export default function LedgerEntryDate(props: LedgerEntryDateProps) {
         {day.format('MMM')},&nbsp;{day.format('ddd')}
       </Typography>
     </Stack>
-  )
+  );
 }

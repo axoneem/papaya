@@ -193,26 +193,36 @@ export function ScreenCalculator(props: ScreenCalculatorProps) {
             // variant='filled'
           />
           <Stack direction="row">
-            <Stack gap={0.5} direction="column">
-              <Stack direction="row" gap={0.5}>
+            <Stack direction="column" sx={{
+              gap: 0.5
+            }}>
+              <Stack direction="row" sx={{
+                gap: 0.5
+              }}>
                 <CalculatorButton>7</CalculatorButton>
                 <CalculatorButton>8</CalculatorButton>
                 <CalculatorButton>9</CalculatorButton>
                 <CalculatorButton color="primary">&times;</CalculatorButton>
               </Stack>
-              <Stack direction="row" gap={0.5}>
+              <Stack direction="row" sx={{
+                gap: 0.5
+              }}>
                 <CalculatorButton>4</CalculatorButton>
                 <CalculatorButton>5</CalculatorButton>
                 <CalculatorButton>6</CalculatorButton>
                 <CalculatorButton color="primary">&ndash;</CalculatorButton>
               </Stack>
-              <Stack direction="row" gap={0.5}>
+              <Stack direction="row" sx={{
+                gap: 0.5
+              }}>
                 <CalculatorButton>1</CalculatorButton>
                 <CalculatorButton>2</CalculatorButton>
                 <CalculatorButton>3</CalculatorButton>
                 <CalculatorButton color="primary">+</CalculatorButton>
               </Stack>
-              <Stack direction="row" gap={0.5}>
+              <Stack direction="row" sx={{
+                gap: 0.5
+              }}>
                 <CalculatorButton>&plusmn;</CalculatorButton>
                 <CalculatorButton>0</CalculatorButton>
                 <CalculatorButton>.</CalculatorButton>
@@ -224,5 +234,5 @@ export function ScreenCalculator(props: ScreenCalculatorProps) {
       </Box>
     </Grow>,
     document.body,
-  )
+  );
 }

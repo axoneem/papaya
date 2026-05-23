@@ -59,7 +59,11 @@ export default function AlertBanner() {
     const displayedAlerts = activeAlerts.slice(0, MAX_DISPLAY_ITEMS)
 
     return (
-        <Stack gap={1} sx={{ width: '100%' }}>
+        <Stack
+            sx={{
+                gap: 1,
+                width: '100%'
+            }}>
             {displayedAlerts.map((alert) => (
                 <Grow key={alert.id} in={true}>
                     <div>
@@ -71,5 +75,5 @@ export default function AlertBanner() {
                 </Grow>
             ))}
         </Stack>
-    )
+    );
 }

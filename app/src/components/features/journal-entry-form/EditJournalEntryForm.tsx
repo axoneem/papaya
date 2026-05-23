@@ -25,7 +25,9 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
   const { control, register } = useFormContext<JournalEntryForm>()
 
   return (
-    <Stack gap={2}>
+    <Stack sx={{
+      gap: 2
+    }}>
       <Card sx={{ p: 2 }}>
         <Grid container columns={12} spacing={1} rowSpacing={1.5} sx={{ flex: '1' }}>
           <Grid size={8}>
@@ -95,7 +97,7 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
         </Grid>
       </Card>
     </Stack>
-  )
+  );
 }
 
 export function EditJournalEntryForm() {

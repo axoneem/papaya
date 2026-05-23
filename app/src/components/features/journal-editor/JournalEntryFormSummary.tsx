@@ -43,11 +43,12 @@ export default function JournalEntryFormSummary() {
   return (
     <Stack>
       <Typography>{memo || JOURNAL_ENTRY_DEFAULT_MEMO}</Typography>
-
-      <Stack direction="row" gap={2}>
+      <Stack direction="row" sx={{
+        gap: 2
+      }}>
         <Typography>{netAmountString}</Typography>
         <Typography>{Array.from(uniqueTopics).join(', ')}</Typography>
       </Stack>
     </Stack>
-  )
+  );
 }

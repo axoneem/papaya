@@ -229,7 +229,12 @@ export default function LedgerDateNavigation() {
           />
         </LocalizationProvider>
       </Popover>
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          alignItems: 'center'
+        }}>
         {!hideDateViewPicker && (
           <Button
             variant="text"
@@ -279,5 +284,5 @@ export default function LedgerDateNavigation() {
         )}
       </Stack>
     </>
-  )
+  );
 }

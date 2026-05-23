@@ -15,20 +15,28 @@ export default function DetailsDrawer(props: DetailsDrawerProps) {
       anchor="right"
       open={props.open}
       onClose={props.onClose}
-      PaperProps={{
-        sx: (theme) => ({
-          width: '50%',
-          maxWidth: theme.breakpoints.values.lg,
-        }),
+      slotProps={{
+        paper: {
+          sx: (theme) => ({
+            width: '50%',
+            maxWidth: theme.breakpoints.values.lg,
+          }),
+        }
       }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" p={2}>
-        <Stack direction="row" alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          p: 2,
+          alignItems: 'center'
+        }}>
+        <Stack direction="row" sx={{ alignItems: 'center' }}>
           <IconButton onClick={props.onClose}>
             <KeyboardDoubleArrowLeft />
           </IconButton>
         </Stack>
         {props.actions && (
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" sx={{ alignItems: 'center' }}>
             {props.actions}
           </Stack>
         )}
@@ -36,5 +44,5 @@ export default function DetailsDrawer(props: DetailsDrawerProps) {
       {/* <Divider /> */}
       {props.children}
     </Drawer>
-  )
+  );
 }

@@ -20,13 +20,21 @@ export default function ServerWidget(props: ServerWidgetProps) {
 
   return (
     <Box sx={{ py: 2, px: 2.5 }}>
-      <Stack direction="row" gap={1} sx={{ flexWrap: 'nowrap', alignItems: 'center' }}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          flexWrap: 'nowrap',
+          alignItems: 'center'
+        }}>
         <Typography variant="h5" sx={{ lineHeight: 1 }}>
           {printedServerName}
         </Typography>
         <Grow in={Boolean(props.userName)}>
           <Typography sx={{ lineHeight: 1, m: 0 }}>
-            <Typography variant="inherit" component="span" color="textDisabled" mr={0.25}>
+            <Typography variant="inherit" component="span" color="textDisabled" sx={{
+              mr: 0.25
+            }}>
               @
             </Typography>
             {props.userName}
@@ -34,7 +42,6 @@ export default function ServerWidget(props: ServerWidgetProps) {
         </Grow>
       </Stack>
       <Typography>{prettyPrintServerUrl(props.serverUrl)}</Typography>
-
       {(props.version || props.status) && (
         <Table size="small" sx={{ width: 150, mt: 1 }}>
           <TableBody sx={{ '& pre': { m: 0 }, '& td': { border: 0 } }}>
@@ -62,10 +69,16 @@ export default function ServerWidget(props: ServerWidgetProps) {
         </Table>
       )}
       {props.actions && (
-        <Stack direction="row" gap={1} mt={1} mx={-1}>
+        <Stack
+          direction="row"
+          sx={{
+            gap: 1,
+            mt: 1,
+            mx: -1
+          }}>
           {props.actions}
         </Stack>
       )}
     </Box>
-  )
+  );
 }

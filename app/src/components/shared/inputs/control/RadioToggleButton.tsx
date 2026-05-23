@@ -10,8 +10,12 @@ const RadioToggleButton = (props: IRadioToggleButtonProps) => {
 
   return (
     <ToggleButton {...rest} sx={{ flexDirection: 'column', alignItems: 'normal', ...sx }}>
-      <Box display="flex" flexDirection="row" alignItems="flex-start" flex={1}>
-        <Box textAlign="left" flex={1}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', flex: 1 }}>
+        <Box
+          sx={{
+            textAlign: "left",
+            flex: 1
+          }}>
           <Typography variant="body1">{heading}</Typography>
           <Typography variant="body2">{description}</Typography>
         </Box>
@@ -19,7 +23,7 @@ const RadioToggleButton = (props: IRadioToggleButtonProps) => {
       </Box>
       {props.children}
     </ToggleButton>
-  )
+  );
 }
 
 export default RadioToggleButton

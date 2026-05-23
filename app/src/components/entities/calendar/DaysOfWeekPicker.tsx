@@ -32,7 +32,12 @@ export default function DaysOfWeekPicker(props: DaysOfWeekPickerProps) {
   }
 
   return (
-    <Stack direction="row" alignItems="center" gap={0.5}>
+    <Stack
+      direction="row"
+      sx={{
+        gap: 0.5,
+        alignItems: 'center'
+      }}>
       {(Object.entries(DAYS_OF_WEEK_NAMES) as [DayOfWeek, string][]).map(([value, label]) => {
         return (
           <Tooltip title={label} key={value}>
@@ -54,5 +59,5 @@ export default function DaysOfWeekPicker(props: DaysOfWeekPickerProps) {
         )
       })}
     </Stack>
-  )
+  );
 }

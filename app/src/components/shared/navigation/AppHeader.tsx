@@ -31,28 +31,46 @@ export default function AppHeader(props: HeaderProps) {
     <Stack
       component="header"
       direction="row"
-      gap={1}
-      alignItems="center"
-      justifyContent={'space-between'}
       sx={{
+        gap: 1,
+        justifyContent: 'space-between',
         py: 1,
         px: 1.5,
         color: 'inherit',
         textDecoration: 'none',
+        alignItems: 'center'
       }}>
-      <Stack direction="row" gap={1} alignItems={'center'}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          alignItems: 'center'
+        }}>
         <IconButton onClick={() => handleClickMenuButton()} size="large">
           {isExpanded ? <MenuOpen /> : <Menu />}
         </IconButton>
         {showLogo && <AppLogo />}
-        <Stack direction="row" alignItems="center" gap={2} ml={showLogo ? 2 : undefined}>
+        <Stack
+          direction="row"
+          sx={{
+            gap: 2,
+            ml: showLogo ? 2 : undefined,
+            alignItems: 'center'
+          }}>
           <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.secondary })}>Journal</Typography>
           <Typography component="span" sx={(theme) => ({ color: theme.palette.text.secondary })}>/</Typography>
           <ActiveJournal sx={{ ml: -1 }} />
           {/* <SyncHeaderWidget /> */}
         </Stack>
       </Stack>
-      <Stack direction="row" gap={1} alignItems={'center'} sx={{ flex: 1, justifyContent: 'flex-end' }}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          flex: 1,
+          justifyContent: 'flex-end',
+          alignItems: 'center'
+        }}>
         <SearchWidget />
         <IconButton sx={(theme) => ({ color: theme.palette.text.secondary })}>
           <Settings />
@@ -60,7 +78,7 @@ export default function AppHeader(props: HeaderProps) {
         <UserWidget />
       </Stack>
     </Stack>
-  )
+  );
 }
 
 // const Shortcut = (props: PropsWithChildren) => {

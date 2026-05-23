@@ -41,7 +41,9 @@ function AddEditUserForm(props: AddEditUserFormProps) {
 
   return (
     <form onSubmit={form.handleSubmit(props.onSubmit)}>
-      <Stack gap={2}>
+      <Stack sx={{
+        gap: 2
+      }}>
         <TextField
           {...form.register('username')}
           label="Username"
@@ -93,7 +95,7 @@ function AddEditUserForm(props: AddEditUserFormProps) {
         </Button>
       </Stack>
     </form>
-  )
+  );
 }
 
 export default function AdminUserManagement() {
