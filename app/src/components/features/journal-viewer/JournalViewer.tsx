@@ -1,3 +1,4 @@
+import { JournalEntryTable } from "@/components/features/journal-editor/JournalEntryTable";
 import { JournalContext } from "@/model/contexts/JournalContext";
 import { journalEntryRepository } from "@/model/orm/repositories";
 import { useQuery } from "@tanstack/react-query";
@@ -18,8 +19,6 @@ export function JournalViewer() {
   });
 
   return (
-    <pre>
-      Data: {JSON.stringify(journalEntriesQuery.data, null, 2)}
-    </pre>
+    <JournalEntryTable journalEntries={journalEntriesQuery.data ?? []} />
   );
 }
