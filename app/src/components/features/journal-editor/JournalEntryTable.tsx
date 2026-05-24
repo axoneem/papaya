@@ -1,38 +1,70 @@
 import { JournalEntry } from "@/model/schema/resource-schemas";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { formatJournalEntryDate } from "@/utils/date-utils";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useMemo } from "react";
 
 interface JournalEntryTableProps {
   journalEntries: JournalEntry[];
 }
 
-export function JournalEntryTable(props: JournalEntryTableProps) {
+interface DateRowSpanMeta {
+  showDateCell: boolean;
+  rowSpan?: number;
+  label?: string;
+}
 
-  const columnHelper = createColumnHelper<JournalEntry>()
+function getDateRowSpanMeta(entries: JournalEntry[]): DateRowSpanMeta[] {
+  return entries.map((entry, index) => {
+    if (index > 0 && entry.date === entries[index - 1].date) {
+      return { showDateCell: false };
+    }
+
+    let rowSpan = 1;
+    for (let i = index + 1; i < entries.length && entries[i].date === entry.date; i++) {
+      rowSpan++;
+    }
+
+    return {
+      showDateCell: true,
+      rowSpan,
+      label: formatJournalEntryDate(entry.date),
+    };
+  });
+}
+
+export function JournalEntryTable(props: JournalEntryTableProps) {
+  const dateRowSpans = useMemo(
+    () => getDateRowSpanMeta(props.journalEntries),
+    [props.journalEntries],
+  );
 
   const tableColumns = [
-    // Display Column
-    // columnHelper.display({
-    //   id: 'actions',
-    //   cell: props => <RowActions row={props.row} />,
-    // }),
-
-    // Accessor columns
-
-    // Date
-
-    // Memo
     {
-      id: 'memo',
-      header: 'Memo',
+      id: "date",
+      header: "Date",
+      accessorFn: (row: JournalEntry) => row.date,
+      cell: (props) => <div>{props.getValue()}</div>,
+    },
+    {
+      id: "amount",
+      header: "Amount",
+      accessorFn: (row: JournalEntry) => {
+        return Object.values(row.transactions).reduce((acc, transaction) => acc + transaction.amount, 0) ?? 0;
+      },
+      cell: (props) => <div>{props.getValue()}</div>,
+    },
+    {
+      id: "memo",
+      header: "Memo",
       accessorFn: (row: JournalEntry) => {
         if (row.memo) {
           return row.memo;
         }
-        const transactionMemo = Object.values(row.transactions).find((transaction) => !!transaction.memo)?.memo
+        const transactionMemo = Object.values(row.transactions).find((transaction) => !!transaction.memo)?.memo;
 
-        return transactionMemo ?? 'Journal entry';
+        return transactionMemo ?? "Journal entry";
       },
-      cell: props => <div>{props.getValue()}</div>,
+      cell: (props) => <div>{props.getValue()}</div>,
     },
   ];
 
@@ -48,22 +80,32 @@ export function JournalEntryTable(props: JournalEntryTableProps) {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>{header.column.columnDef.header}</th>
+              <th key={header.id}>
+                {flexRender(header.column.columnDef.header, header.getContext())}
+              </th>
             ))}
           </tr>
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
+        {table.getRowModel().rows.map((row, rowIndex) => {
+          const dateMeta = dateRowSpans[rowIndex];
+          const dataCells = row.getVisibleCells().filter((cell) => cell.column.id !== "date");
+
+          return (
+            <tr key={row.id}>
+              {dateMeta.showDateCell && (
+                <td rowSpan={dateMeta.rowSpan}>{dateMeta.label}</td>
+              )}
+              {dataCells.map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
-  )
+  );
 }

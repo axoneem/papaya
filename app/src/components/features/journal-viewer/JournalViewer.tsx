@@ -19,6 +19,11 @@ export function JournalViewer() {
   });
 
   return (
-    <JournalEntryTable journalEntries={journalEntriesQuery.data ?? []} />
+    <>
+      <pre>
+        {JSON.stringify(journalEntriesQuery.data, null, 2)}
+      </pre>
+      <JournalEntryTable journalEntries={journalEntriesQuery.data ?? []} />
+    </>
   );
 }
