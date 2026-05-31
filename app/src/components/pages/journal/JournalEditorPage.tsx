@@ -4,20 +4,10 @@ import { JournalViewer } from "@/components/features/journal-viewer/JournalViewe
 
 export default function JournalEditorPage() {
 
-  // useEffect(() => {
-  //   getDatabaseClient().then((db) => {
-  //     db.query('papaya/journal_entries_by_rid', { include_docs: true }).then((result) => {
-  //       console.log(result);
-  //     })
-  //   })
-
-  // }, []);
-
-
   return (
-    <main>
+    <div id='journal-editor-page'>
       <JournalViewer />
       <JournalEntryEditor />
-    </main>
+    </div>
   )
 }

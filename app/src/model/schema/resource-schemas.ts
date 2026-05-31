@@ -5,45 +5,31 @@ import {
 } from "@/model/schema/template-schemas";
 import z from "zod";
 import { CurrencyIso4217Schema, PictogramSchema, PriceConversionSchema } from "./etc-schemas";
-import { JournalEntryRidSchema, JournalRidSchema, TransactionRidSchema } from "./namespace-schemas";
+import { JournalEntryRidSchema, TransactionRidSchema } from "./namespace-schemas";
 import {
   PersonSlugSchema
 } from "./string-schemas";
 
-/**
- * Journal schema
- */
-export const JournalSchema = createResourceSchema("Journal", {
-  /**
-   * The name for the journal
-   */
-  name: z.string(),
-  /**
-   * Optional notes for the journal
-   */
-  notes: z.string(),
-  /**
-   * The last time the journal was opened
-   */
-  lastOpenedAt: z.iso.datetime().nullable(),
-  /**
-   * The currency used to express monetary values in the journal. Other currencies
-   * can be used, but the journal maintains monetary values in a single currency.
-   */
-  currency: CurrencyIso4217Schema,
-  /**
-   * The date and time the journal was created
-   */
-  createdAt: z.iso.datetime(),
-});
-
 export const PreferencesSchema = createResourceSchema("Preferences", {
   _id: z.literal(PREFERENCES_ID),
   journal: z.object({
-    selection: z.enum(["ALWAYS_PROMPT", "DEFAULT_JOURNAL_ELSE_PROMPT", "LAST_OPENED"]).default("LAST_OPENED"),
-    defaults: z.object({
-      defaultJournalRid: JournalRidSchema.nullish(),
-    }),
+    /**
+     * The name for the journal
+     */
+    name: z.string(),
+    /**
+     * Optional notes for the journal
+     */
+    notes: z.string(),
+    /**
+     * The currency used to express monetary values in the journal. Other currencies
+     * can be used, but the journal maintains monetary values in a single currency.
+     */
+    currency: CurrencyIso4217Schema,
+    /**
+     * The date and time the journal was created
+     */
+    createdAt: z.iso.datetime(),
   }),
 });
 
@@ -71,14 +57,12 @@ export const TransactionSchema = createResourceSchema("Transaction", {
 });
 
 export const JournalEntrySchema = createResourceSchema("JournalEntry", {
-  journalRid: JournalRidSchema,
   transactions: z.record(TransactionRidSchema, TransactionSchema),
   memo: z.string().nullish(),
   date: z.iso.date(),
   time: z.iso.time().nullish(),
 });
 
-export type Journal = z.infer<typeof JournalSchema>;
 export type Preferences = z.infer<typeof PreferencesSchema>;
 export type Person = z.infer<typeof PersonSchema>;
 export type Task = z.infer<typeof TaskSchema>;

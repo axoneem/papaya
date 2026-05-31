@@ -156,12 +156,11 @@ export default function ColorPicker(props: ColorPickerProps) {
             paper: {
               sx: { px: 1, py: 0.5 },
             },
-          },
-
-          MenuListProps: {
-            sx: {
-              display: 'grid',
-              gridTemplateColumns: 'repeat(7, 1fr)',
+            list: {
+              sx: {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, 1fr)',
+              },
             },
           },
         }}

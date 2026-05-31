@@ -1,4 +1,4 @@
-import type { JournalEntryRid, JournalRid, TransactionRid } from "@/model/schema/namespace-schemas";
+import type { JournalEntryRid, TransactionRid } from "@/model/schema/namespace-schemas";
 import { JournalEntry, Transaction } from "@/model/schema/resource-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
 import { getToday } from "@/utils/date-utils";
@@ -19,12 +19,6 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
     });
   }
 
-  // TODO remove, all documents will call timestamp() in the Repository.save() method
-  // beforeSave = async (data: JournalEntry & Partial<OrmDocument>): Promise<JournalEntry & Partial<OrmDocument>> => {
-  //   alert('before save');
-  //   return timestamp(data);
-  // }
-
   factory = (data: Partial<JournalEntry>): ResourceIntrinsic<"JournalEntry"> => {
     const rid: JournalEntryRid = data.rid ?? this.makeRid();
 
@@ -40,7 +34,6 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
     }
 
     return {
-      journalRid: data.journalRid!,
       rid,
       date: data.date ?? getToday(),
       transactions,
@@ -48,7 +41,6 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
   };
 
   public async getJournalEntriesByDate(
-    journalRid: JournalRid,
     startDate: Date | string | null = undefined,
     endDate: Date | string | null = undefined,
   ): Promise<OrmDocument<JournalEntry>[]> {
@@ -68,8 +60,8 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
 
     try {
       const result = await db.query('papaya/journal_entries_by_date', {
-        startkey: [journalRid, startDateKey],
-        endkey: [journalRid, endDateKey],
+        startkey: startDateKey,
+        endkey: endDateKey,
         include_docs: true,
       });
 

@@ -16,7 +16,7 @@ export const databaseViews = {
   'journal_entries_by_date': {
     map: function (doc: PapayaDocument) {
       if (doc.kind === 'papaya:journalentry') {
-        emit([doc.journalRid, doc.date], doc._id);
+        emit(doc.date, doc._id);
       }
     }
   }

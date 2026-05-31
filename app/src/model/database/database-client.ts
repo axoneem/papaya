@@ -45,20 +45,24 @@ const initializeDatabaseClient = async () => {
   let existingDesignDoc: OrmDocument<PapayaDesignDoc> | undefined = undefined;
 
   await db.get(POUCH_DB_DESIGN_DOC_ID).then((doc) => {
+    console.log('found design doc: ', doc);
     if (doc && '_id' in doc) {
       existingDesignDoc = doc as unknown as OrmDocument<PapayaDesignDoc>;
     }
   }).catch((err: PouchDB.Core.Error) => {
+    console.log('error getting design doc: ', err);
     if (err.status !== 404) {
       console.error('error getting design doc: ', err);
     }
   });
 
   if (!existingDesignDoc) {
+    console.log('creating design doc');
     await db.put(designDoc).catch((err) => {
       console.error('error creating design doc: ', err);
     });
   } else if (!('version' in existingDesignDoc) || existingDesignDoc.version < designDoc.version) {
+    console.log('design doc needs update');
     await db.put({
       ...existingDesignDoc,
       ...designDoc,
@@ -66,6 +70,8 @@ const initializeDatabaseClient = async () => {
       console.error('error updating design doc: ', err);
     });
   }
+
+  console.log('database client initialized');
 
   return db;
 }

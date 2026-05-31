@@ -1,9 +1,8 @@
-import { DEFAULT_CURRENCY } from "@/constants/config-constants";
+import { DEFAULT_CURRENCY, DEFAULT_JOURNAL_NAME } from "@/constants/config-constants";
 import { PREFERENCES_ID } from "@/constants/namespace-constants";
 import { Preferences } from "@/model/schema/resource-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
 import { Repository, ResourceIntrinsic } from "../Repository";
-import { journalRepository } from "./JournalRepository";
 
 export class PreferencesRepository extends Repository<"Preferences"> {
   constructor() {
@@ -11,21 +10,28 @@ export class PreferencesRepository extends Repository<"Preferences"> {
   }
 
   factory = (data: Partial<Preferences>): ResourceIntrinsic<"Preferences"> => {
+    const now = new Date().toISOString();
     return {
       _id: PREFERENCES_ID,
-      journal: data.journal ?? {
-        selection: "LAST_OPENED",
-        defaults: {
-          defaultJournalRid: undefined,
-        },
+      journal: {
+        createdAt: now,
+        name: DEFAULT_JOURNAL_NAME,
+        currency: DEFAULT_CURRENCY,
+        notes: '',
+        ...(data.journal ?? {}),
       },
     }
   };
 
   async getPreferences(): Promise<OrmDocument<Preferences> | undefined> {
     const db = await this.getDb();
-    const result = await db.get<Preferences>(PREFERENCES_ID);
-    return result as OrmDocument<Preferences> | undefined;
+    return db.get<Preferences>(PREFERENCES_ID)
+      .then((result) => {
+        return result as OrmDocument<Preferences> | undefined;
+      })
+      .catch(() => {
+        return undefined;
+      });
   }
 
   async getOrCreatePreferences(): Promise<OrmDocument<Preferences>> {
@@ -34,19 +40,7 @@ export class PreferencesRepository extends Repository<"Preferences"> {
       return existing;
     }
 
-    const defaultJournal = await journalRepository.Model.create({
-      name: "Default Journal",
-      currency: DEFAULT_CURRENCY,
-    });
-
-    return this.Model.create({
-      journal: {
-        selection: "DEFAULT_JOURNAL_ELSE_PROMPT",
-        defaults: {
-          defaultJournalRid: defaultJournal.rid,
-        },
-      },
-    });
+    return this.Model.create();
   }
 }
 

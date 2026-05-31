@@ -1,6 +1,5 @@
 'use client';
 
-import { JournalContext } from '@/model/contexts/JournalContext';
 import { JournalEntryEditorContext } from '@/model/contexts/JournalEntryEditorContext';
 import { journalEntryRepository } from '@/model/orm/repositories';
 import { JournalEntryToFormCodec } from '@/model/schema/codec-schemas';
@@ -9,19 +8,14 @@ import { JournalEntry } from '@/model/schema/resource-schemas';
 import { OrmDocument } from '@/model/types/orm-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  useContext,
   useState,
   type PropsWithChildren
 } from 'react';
 import { useForm } from 'react-hook-form';
 
 export function JournalEntryEditorContextProvider(props: PropsWithChildren) {
-  const { activeJournal } = useContext(JournalContext);
-
   const [editingEntry, setEditingEntry] = useState<JournalEntry>(() => {
-    const newEntry = journalEntryRepository.Model.make({
-      journalRid: activeJournal.rid,
-    });
+    const newEntry = journalEntryRepository.Model.make();
     return newEntry;
   });
 
@@ -50,9 +44,7 @@ export function JournalEntryEditorContextProvider(props: PropsWithChildren) {
   }
 
   const beginCreating = () => {
-    const newEntry = journalEntryRepository.Model.make({
-      journalRid: activeJournal.rid,
-    });
+    const newEntry = journalEntryRepository.Model.make();
     beginEditing(newEntry);
   }
 
