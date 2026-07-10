@@ -49,7 +49,7 @@ export function JournalEntryTable(props: JournalEntryTableProps) {
       id: "amount",
       header: "Amount",
       accessorFn: (row: JournalEntry) => {
-        return Object.values(row.transactions).reduce((acc, transaction) => acc + transaction.amount, 0) ?? 0;
+        return row.amount;
       },
       cell: (props) => <div>{props.getValue()}</div>,
     },

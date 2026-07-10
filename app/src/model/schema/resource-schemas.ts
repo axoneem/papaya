@@ -4,11 +4,7 @@ import {
   createResourceSchema
 } from "@/model/schema/template-schemas";
 import z from "zod";
-import { CurrencyIso4217Schema, PictogramSchema, PriceConversionSchema } from "./etc-schemas";
-import { JournalEntryRidSchema, TransactionRidSchema } from "./namespace-schemas";
-import {
-  PersonSlugSchema
-} from "./string-schemas";
+import { AccountSlugSchema, CurrencyIso4217Schema, PersonSlugSchema, PictogramSchema, PriceConversionSchema, StampSlugSchema, TopicSlugSchema } from "./etc-schemas";
 
 export const PreferencesSchema = createResourceSchema("Preferences", {
   _id: z.literal(PREFERENCES_ID),
@@ -44,27 +40,57 @@ export const TaskSchema = createResourceSchema("Task", {
   completedAt: z.iso.date().nullable(),
 });
 
-export const TransactionSchema = createResourceSchema("Transaction", {
-  parent: JournalEntryRidSchema.nullable(),
-  memo: z.string(),
-  amount: z.number(),
-  convertedFrom: PriceConversionSchema.nullish(),
-  date: z.iso.date().nullish(),
-  time: z.iso.time().nullish(),
-  sourceAccount: z.string().nullish(),
-  destinationAccount: z.string().nullish(),
-  topics: z.array(z.string()).nullish(),
+export const PoolSchema = createResourceSchema("Pool", {
 });
 
 export const JournalEntrySchema = createResourceSchema("JournalEntry", {
-  transactions: z.record(TransactionRidSchema, TransactionSchema),
-  memo: z.string().nullish(),
+  /**
+   * The amount of the journal entry
+   */
+  amount: z.number(),
+  /**
+   * The date of the journal entry
+   */
   date: z.iso.date(),
+  /**
+   * The memo of the journal entry
+   */
+  memo: z.string(),
+  /**
+   * If present, indicates that the amount was originally expressed in a different currency
+   */
+  convertedFrom: PriceConversionSchema.nullish(),
+  /**
+   * The account to which the journal entry is credited/debited
+   */
+  destinationAccount: AccountSlugSchema.nullish(),
+  /**
+   * Optional notes for the journal entry
+   */
+  notes: z.string().nullish(),
+  /**
+   * Optional timestamp representing the date and time the journal entry was posted
+   */
+  postedAt: z.iso.datetime().nullish(),
+  /**
+   * The account from which the journal entry is debited
+   */
+  sourceAccount: AccountSlugSchema.nullish(),
+  /**
+   * The stamps applied to the journal entry, if any
+   */
+  stamps: z.array(StampSlugSchema).nullish(),
+  /**
+   * The time of the journal entry
+   */
   time: z.iso.time().nullish(),
+  /**
+   * The topics to which the journal entry is associated, if any
+   */
+  topics: z.array(TopicSlugSchema).nullish(),
 });
 
 export type Preferences = z.infer<typeof PreferencesSchema>;
 export type Person = z.infer<typeof PersonSchema>;
 export type Task = z.infer<typeof TaskSchema>;
-export type Transaction = z.infer<typeof TransactionSchema>;
 export type JournalEntry = z.infer<typeof JournalEntrySchema>;

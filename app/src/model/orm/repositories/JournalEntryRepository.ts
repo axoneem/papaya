@@ -1,42 +1,23 @@
-import type { JournalEntryRid, TransactionRid } from "@/model/schema/namespace-schemas";
-import { JournalEntry, Transaction } from "@/model/schema/resource-schemas";
+import type { JournalEntryRid } from "@/model/schema/namespace-schemas";
+import { JournalEntry } from "@/model/schema/resource-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
 import { getToday } from "@/utils/date-utils";
 import { Repository, ResourceIntrinsic } from "../Repository";
-import { TransactionRepository } from "./TransactionRepository";
 
 export class JournalEntryRepository extends Repository<"JournalEntry"> {
-  private transactionRepository: TransactionRepository;
-
   constructor() {
     super("JournalEntry");
-    this.transactionRepository = new TransactionRepository();
-  }
-
-  private makeTransaction(entryRid: JournalEntryRid): Transaction {
-    return this.transactionRepository.Model.make({
-      parent: entryRid,
-    });
   }
 
   factory = (data: Partial<JournalEntry>): ResourceIntrinsic<"JournalEntry"> => {
     const rid: JournalEntryRid = data.rid ?? this.makeRid();
 
-    let transactions: Record<TransactionRid, Transaction>;
-
-    if (data.transactions) {
-      transactions = data.transactions;
-    } else {
-      const transaction = this.makeTransaction(rid);
-      transactions = {
-        [transaction.rid]: transaction,
-      };
-    }
-
     return {
       rid,
       date: data.date ?? getToday(),
-      transactions,
+      amount: data.amount ?? 0,
+      topics: data.topics ?? [],
+      memo: data.memo ?? '',
     };
   };
 

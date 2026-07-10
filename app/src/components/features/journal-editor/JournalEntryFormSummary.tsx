@@ -3,7 +3,7 @@
 import { JOURNAL_ENTRY_DEFAULT_MEMO } from "@/constants/journal-editor-constants";
 import { JournalEntryToFormCodec } from "@/model/schema/codec-schemas";
 import { JournalEntryForm } from "@/model/schema/form-schemas";
-import { JournalEntry, Transaction } from "@/model/schema/resource-schemas";
+import { JournalEntry } from "@/model/schema/resource-schemas";
 import { getPriceString } from "@/utils/string-utils";
 import { Stack, Typography } from "@mui/material";
 import { useDeferredValue } from "react";
@@ -18,13 +18,9 @@ export default function JournalEntryFormSummary() {
     formValues ? JournalEntryToFormCodec.encode(formValues) : null
   );
 
-  const transactions: Transaction[] = Object.values(optimisticJournalEntry.transactions);
+  const netAmount: number = optimisticJournalEntry.amount;
 
-  const netAmount: number = transactions.reduce((acc: number, transaction: Transaction) => {
-    return acc + transaction.amount;
-  }, 0);
-
-  const uniqueTopics: Set<string> = new Set(transactions.flatMap((transaction) => transaction.topics ?? []))
+  const uniqueTopics: Set<string> = new Set(optimisticJournalEntry.topics ?? []);
 
   const netAmountString = getPriceString(netAmount, {
     sign: 'whenPositive',
@@ -34,10 +30,7 @@ export default function JournalEntryFormSummary() {
 
   let memo: string | undefined = optimisticJournalEntry.memo?.trim()
   if (!memo) {
-    const transactionMemo = transactions.find((transaction) => !!transaction.memo?.trim())?.memo?.trim();
-    if (transactionMemo) {
-      memo = transactionMemo;
-    }
+    memo = optimisticJournalEntry.memo?.trim();
   }
 
   return (

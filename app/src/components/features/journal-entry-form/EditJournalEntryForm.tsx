@@ -1,5 +1,4 @@
 import { JournalEntryForm } from "@/model/schema/form-schemas";
-import { TransactionRid } from "@/model/schema/namespace-schemas";
 import { useFormContext } from "react-hook-form";
 
 import AmountField from "@/components/shared/inputs/field/AmountField";
@@ -7,21 +6,9 @@ import DateField from "@/components/shared/inputs/field/DateField";
 import TopicField from "@/components/shared/inputs/field/TopicField";
 import { Card, Grid, Stack, TextField } from "@mui/material";
 import dayjs from "dayjs";
-import { Controller, type FieldPath } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
-interface EditTransactionFormFields {
-  memo: FieldPath<JournalEntryForm>;
-  date: FieldPath<JournalEntryForm>;
-  amountString: FieldPath<JournalEntryForm>;
-  topics: FieldPath<JournalEntryForm>;
-}
-
-interface EditTransactionFormProps {
-  fields: EditTransactionFormFields;
-}
-
-export function EditTransactionForm(props: EditTransactionFormProps) {
-  const { fields } = props;
+export function EditJournalEntryForm() {
   const { control, register } = useFormContext<JournalEntryForm>()
 
   return (
@@ -35,13 +22,13 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
               size="small"
               label="Memo"
               fullWidth
-              {...register(fields.memo)}
+              {...register('memo')}
             />
           </Grid>
           <Grid size={4}>
             <Controller<JournalEntryForm>
               control={control}
-              name={fields.date}
+              name='date'
               render={({ field }) => (
                 <DateField
                   slotProps={{
@@ -64,7 +51,7 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
           <Grid size={4}>
             <Controller
               control={control}
-              name={fields.amountString}
+              name='amountString'
               render={({ field }) => (
                 <AmountField
                   size="small"
@@ -80,7 +67,7 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
           <Grid size={'grow'}>
             <Controller<JournalEntryForm>
               control={control}
-              name={fields.topics}
+              name='topics'
               render={({ field }) => (
                 <TopicField
                   knownTopics={[]}
@@ -98,34 +85,4 @@ export function EditTransactionForm(props: EditTransactionFormProps) {
       </Card>
     </Stack>
   );
-}
-
-export function EditJournalEntryForm() {
-  const { watch } = useFormContext<JournalEntryForm>()
-
-  const transactions = watch('transactions');
-  const modality = Object.keys(transactions).length > 1 ? 'complex' : 'simple';
-
-  if (modality === 'complex') {
-    return "Not implemented"
-  }
-
-  const transactionRid = Object.keys(transactions)[0] as TransactionRid | undefined;
-
-  if (!transactionRid) {
-    return null;
-  }
-
-  return (
-    <EditTransactionForm fields={{
-      memo: `transactions.${transactionRid}.memo`,
-      /*
-       * When editing a "simple" journal entry, the transaction date is omitted
-       * in favor of the journal entry date.
-       */
-      date: `date`,
-      amountString: `transactions.${transactionRid}.amountString`,
-      topics: `transactions.${transactionRid}.topics`,
-    }} />
-  )
 }
