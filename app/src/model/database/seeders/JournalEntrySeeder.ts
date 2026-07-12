@@ -1,6 +1,6 @@
-import { journalEntryRepository } from "@/model/orm/repositories";
-import { JournalEntry, JournalEntrySchema } from "@/model/schema/resource-schemas";
+import { journalEntryRepository, transactionRepository } from "@/model/orm/repositories";
 import type { AccountSlug, StampSlug, TopicSlug } from "@/model/schema/etc-schemas";
+import { JournalEntry, JournalEntrySchema } from "@/model/schema/resource-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
 import dayjs from "dayjs";
 
@@ -88,6 +88,33 @@ const TRANSFER_MEMOS = [
   "Sweep to emergency fund",
 ];
 
+const SPLIT_MEAL_MEMOS = [
+  "Dinner at Osteria — paid for the table",
+  "Brunch at Sunny Side — covered the group",
+  "Pizza night — spotted the bill",
+  "Sushi with friends — paid upfront",
+  "Taco Tuesday — covered everyone",
+  "Happy hour — picked up the tab",
+  "Birthday dinner — hosted the meal",
+];
+
+const FRIEND_NAMES = [
+  "Alex",
+  "Jordan",
+  "Sam",
+  "Riley",
+  "Casey",
+  "Morgan",
+  "Taylor",
+  "Jamie",
+];
+
+const SPLIT_MEAL_NOTES = [
+  "Friends reimbursed in cash over the next few days.",
+  "Still waiting on one person to pay back their share.",
+  "Everyone settled up in cash by the end of the week.",
+];
+
 const NOTES = [
   "Split three ways with roommates.",
   "Used corporate card — need receipt.",
@@ -113,6 +140,56 @@ const randomAmount = (min: number, max: number): number => {
   return Math.round(value * 100) / 100;
 };
 
+const maybePostedAt = (date: string): string | undefined => {
+  if (Math.random() >= 0.4) {
+    return undefined;
+  }
+
+  return dayjs(date)
+    .hour(Math.floor(Math.random() * 24))
+    .minute(Math.floor(Math.random() * 60))
+    .toISOString();
+};
+
+const makeSplitMealTransactions = (date: string) => {
+  const billTotal = randomAmount(60, 220);
+  const reimbursingFriends = 2 + Math.floor(Math.random() * 3);
+  const yourShare = randomAmount(12, billTotal * 0.35);
+  let remainingReimbursement = Math.round((billTotal - yourShare) * 100) / 100;
+  const mealMemo = pick(SPLIT_MEAL_MEMOS);
+
+  const transactions = [
+    transactionRepository.Model.make({
+      amount: -billTotal,
+      memo: mealMemo,
+      sourceAccount: pick(["papaya:account:credit-card", "papaya:account:checking"] as const),
+      postedAt: maybePostedAt(date),
+    }),
+  ];
+
+  const shuffledFriends = [...FRIEND_NAMES].sort(() => Math.random() - 0.5);
+
+  for (let i = 0; i < reimbursingFriends; i++) {
+    const isLast = i === reimbursingFriends - 1;
+    const amount = isLast
+      ? remainingReimbursement
+      : randomAmount(remainingReimbursement * 0.15, remainingReimbursement * 0.55);
+
+    remainingReimbursement = Math.round((remainingReimbursement - amount) * 100) / 100;
+
+    transactions.push(
+      transactionRepository.Model.make({
+        amount,
+        memo: `${shuffledFriends[i]} — dinner share`,
+        destinationAccount: "papaya:account:cash",
+        postedAt: maybePostedAt(date),
+      }),
+    );
+  }
+
+  return { transactions, memo: mealMemo };
+};
+
 export class JournalEntrySeeder {
   async seed(count: number = DEFAULT_COUNT): Promise<OrmDocument<JournalEntry>[]> {
     const saved: OrmDocument<JournalEntry>[] = [];
@@ -134,6 +211,32 @@ export class JournalEntrySeeder {
     const date = dayjs().subtract(daysAgo, "day").format("YYYY-MM-DD");
     const isIncome = Math.random() < 0.12;
     const isTransfer = !isIncome && Math.random() < 0.08;
+    const isSplitMeal = !isIncome && !isTransfer && Math.random() < 0.12;
+
+    if (isSplitMeal) {
+      const { transactions, memo } = makeSplitMealTransactions(date);
+
+      const data: Partial<JournalEntry> = {
+        date,
+        memo: `${memo} (#${index + 1})`,
+        topics: ["papaya:topic:food", ...pickSome(TOPICS.filter((topic) => topic !== "papaya:topic:food"), 1)],
+        transactions,
+        notes: pick(SPLIT_MEAL_NOTES),
+      };
+
+      if (Math.random() < 0.55) {
+        const hour = Math.floor(Math.random() * 24);
+        const minute = Math.floor(Math.random() * 60);
+        const second = Math.floor(Math.random() * 60);
+        data.time = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`;
+      }
+
+      if (Math.random() < 0.25) {
+        data.stamps = pickSome(STAMPS, 2);
+      }
+
+      return data;
+    }
 
     const amount = isIncome
       ? randomAmount(800, 4500)
@@ -147,11 +250,29 @@ export class JournalEntrySeeder {
         ? pick(TRANSFER_MEMOS)
         : pick(EXPENSE_MEMOS);
 
+    const transaction = transactionRepository.Model.make({
+      amount,
+      memo,
+    });
+
+    if (isTransfer) {
+      const accounts = pickSome(ACCOUNTS, 2);
+      transaction.sourceAccount = accounts[0] ?? pick(ACCOUNTS);
+      transaction.destinationAccount =
+        accounts[1] ?? pick(ACCOUNTS.filter((a) => a !== transaction.sourceAccount));
+    } else if (Math.random() < 0.6) {
+      transaction.sourceAccount = pick(ACCOUNTS);
+    }
+
+    if (Math.random() < 0.4) {
+      transaction.postedAt = maybePostedAt(date);
+    }
+
     const data: Partial<JournalEntry> = {
       date,
-      amount,
       memo: `${memo} (#${index + 1})`,
       topics: pickSome(TOPICS, 2),
+      transactions: [transaction],
     };
 
     if (Math.random() < 0.55) {
@@ -167,22 +288,6 @@ export class JournalEntrySeeder {
 
     if (Math.random() < 0.25) {
       data.stamps = pickSome(STAMPS, 2);
-    }
-
-    if (isTransfer) {
-      const accounts = pickSome(ACCOUNTS, 2);
-      data.sourceAccount = accounts[0] ?? pick(ACCOUNTS);
-      data.destinationAccount = accounts[1] ?? pick(ACCOUNTS.filter((a) => a !== data.sourceAccount));
-    } else if (Math.random() < 0.6) {
-      data.sourceAccount = pick(ACCOUNTS);
-    }
-
-    if (Math.random() < 0.4) {
-      const postedAt = dayjs(date)
-        .hour(Math.floor(Math.random() * 24))
-        .minute(Math.floor(Math.random() * 60))
-        .toISOString();
-      data.postedAt = postedAt;
     }
 
     return data;

@@ -3,6 +3,7 @@ import { JournalEntry } from "@/model/schema/resource-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
 import { getToday } from "@/utils/date-utils";
 import { Repository, ResourceIntrinsic } from "../Repository";
+import { transactionRepository } from "./TransactionRepository";
 
 export class JournalEntryRepository extends Repository<"JournalEntry"> {
   constructor() {
@@ -15,14 +16,10 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
     return {
       rid,
       date: data.date ?? getToday(),
-      amount: data.amount ?? 0,
+      transactions: data.transactions ?? [transactionRepository.Model.make()],
       topics: data.topics ?? [],
-      memo: data.memo ?? '',
-      convertedFrom: data.convertedFrom,
-      destinationAccount: data.destinationAccount,
+      memo: data.memo,
       notes: data.notes,
-      postedAt: data.postedAt,
-      sourceAccount: data.sourceAccount,
       stamps: data.stamps,
       time: data.time,
     };

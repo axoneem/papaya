@@ -18,7 +18,7 @@ export default function JournalEntryFormSummary() {
     formValues ? JournalEntryToFormCodec.encode(formValues) : null
   );
 
-  const netAmount: number = optimisticJournalEntry.amount;
+  const netAmount: number = optimisticJournalEntry.transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
 
   const uniqueTopics: Set<string> = new Set(optimisticJournalEntry.topics ?? []);
 

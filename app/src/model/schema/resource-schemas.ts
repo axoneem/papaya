@@ -40,20 +40,21 @@ export const TaskSchema = createResourceSchema("Task", {
   completedAt: z.iso.date().nullable(),
 });
 
-export const PoolSchema = createResourceSchema("Pool", {
-});
-
-export const JournalEntrySchema = createResourceSchema("JournalEntry", {
+export const TransactionSchema = createResourceSchema("Transaction", {
   /**
-   * The amount of the journal entry
+   * The amount of the transaction
    */
   amount: z.number(),
   /**
-   * The date of the journal entry
+   * Optional timestamp representing the date and time the transaction was posted
    */
-  date: z.iso.date(),
+  postedAt: z.iso.datetime().nullish(),
   /**
-   * The memo of the journal entry
+   * The account from which the transaction is debited
+   */
+  sourceAccount: AccountSlugSchema.nullish(),
+  /**
+   * The memo of the transaction
    */
   memo: z.string(),
   /**
@@ -61,42 +62,44 @@ export const JournalEntrySchema = createResourceSchema("JournalEntry", {
    */
   convertedFrom: PriceConversionSchema.nullish(),
   /**
-   * The account to which the journal entry is credited/debited
+   * The account to which the transaction is credited/debited
    */
   destinationAccount: AccountSlugSchema.nullish(),
+});
+
+export const JournalEntrySchema = createResourceSchema("JournalEntry", {
   /**
-   * Optional notes for the journal entry
+   * The date of the journal entry
    */
-  notes: z.string().nullish(),
-  /**
-   * Optional timestamp representing the date and time the journal entry was posted
-   */
-  postedAt: z.iso.datetime().nullish(),
-  /**
-   * The account from which the journal entry is debited
-   */
-  sourceAccount: AccountSlugSchema.nullish(),
-  /**
-   * The stamps applied to the journal entry, if any
-   */
-  stamps: z.array(StampSlugSchema).nullish(),
+  date: z.iso.date(),
   /**
    * The time of the journal entry
    */
   time: z.iso.time().nullish(),
   /**
+   * The memo of the journal entry. If not provided, the first transaction's memo is used.
+   */
+  memo: z.string().nullish(),
+  /**
+   * Optional notes for the journal entry
+   */
+  notes: z.string().nullish(),
+  /**
+   * The stamps applied to the journal entry, if any
+   */
+  stamps: z.array(StampSlugSchema).nullish(),
+  /**
    * The topics to which the journal entry is associated, if any
    */
   topics: z.array(TopicSlugSchema).nullish(),
   /**
-   * Ordered lineage from the root ancestor down to the immediate parent.
-   * Empty for root journal entries; each child embeds the full ancestry so
-   * MapReduce views can roll up values without async parent lookups.
+   * The set of transactions that comprise the journal entry
    */
-  // path: z.array(JournalEntryRidSchema).default([]),
+  transactions: z.array(TransactionSchema)
 });
 
 export type Preferences = z.infer<typeof PreferencesSchema>;
 export type Person = z.infer<typeof PersonSchema>;
 export type Task = z.infer<typeof TaskSchema>;
+export type Transaction = z.infer<typeof TransactionSchema>;
 export type JournalEntry = z.infer<typeof JournalEntrySchema>;

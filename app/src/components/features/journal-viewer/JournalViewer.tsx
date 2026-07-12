@@ -2,6 +2,7 @@ import { JournalEntryTable } from "@/components/features/journal-editor/JournalE
 import { useDatabaseSeeder } from "@/hooks/useDatabaseSeeder";
 import { journalEntryRepository } from "@/model/orm/repositories";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 
 export function JournalViewer() {
@@ -12,6 +13,14 @@ export function JournalViewer() {
       return journalEntryRepository.getJournalEntriesByDate();
     },
   });
+
+  useEffect(() => {
+    if (!journalEntriesQuery.data) {
+      return;
+    }
+
+    console.log('entries:', journalEntriesQuery.data);
+  }, [journalEntriesQuery.data]);
 
   useDatabaseSeeder();
 
