@@ -88,6 +88,12 @@ export const JournalEntrySchema = createResourceSchema("JournalEntry", {
    * The topics to which the journal entry is associated, if any
    */
   topics: z.array(TopicSlugSchema).nullish(),
+  /**
+   * Ordered lineage from the root ancestor down to the immediate parent.
+   * Empty for root journal entries; each child embeds the full ancestry so
+   * MapReduce views can roll up values without async parent lookups.
+   */
+  // path: z.array(JournalEntryRidSchema).default([]),
 });
 
 export type Preferences = z.infer<typeof PreferencesSchema>;

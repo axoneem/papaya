@@ -18,6 +18,13 @@ export class JournalEntryRepository extends Repository<"JournalEntry"> {
       amount: data.amount ?? 0,
       topics: data.topics ?? [],
       memo: data.memo ?? '',
+      convertedFrom: data.convertedFrom,
+      destinationAccount: data.destinationAccount,
+      notes: data.notes,
+      postedAt: data.postedAt,
+      sourceAccount: data.sourceAccount,
+      stamps: data.stamps,
+      time: data.time,
     };
   };
 

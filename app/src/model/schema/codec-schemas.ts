@@ -9,7 +9,7 @@ export const JournalEntryToFormCodec = z.codec(
   JournalEntryFormSchema,
   {
     decode: (journalEntry: JournalEntry): JournalEntryForm => {
-      console.log('beginning to decode:', journalEntry);
+      // console.log('beginning to decode:', journalEntry);
       return {
         '@source': journalEntry,
         memo: journalEntry.memo ?? JOURNAL_ENTRY_DEFAULT_MEMO,

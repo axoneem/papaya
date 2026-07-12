@@ -1,4 +1,5 @@
 import { JournalEntryTable } from "@/components/features/journal-editor/JournalEntryTable";
+import { useDatabaseSeeder } from "@/hooks/useDatabaseSeeder";
 import { journalEntryRepository } from "@/model/orm/repositories";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,6 +12,8 @@ export function JournalViewer() {
       return journalEntryRepository.getJournalEntriesByDate();
     },
   });
+
+  useDatabaseSeeder();
 
   return (
     <>
