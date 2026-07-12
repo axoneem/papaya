@@ -50,7 +50,9 @@ export default function LoginForm(props: LoginFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Stack gap={2}>
+      <Stack sx={{
+        gap: 2
+      }}>
         <TextField
           {...form.register('username')}
           label="Username"
@@ -70,5 +72,5 @@ export default function LoginForm(props: LoginFormProps) {
         <Button type="submit" loading={loading}>Login</Button>
       </Stack>
     </form>
-  )
+  );
 }

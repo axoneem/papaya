@@ -1,8 +1,8 @@
-import KeyboardShortcut from '@/components/display/KeyboardShortcut'
-import { KeyboardActionName } from '@/constants/keyboard'
+import KeyboardShortcut from '@/components/shared/display/KeyboardShortcut'
+import { KeyboardActionName } from '@/constants/keyboard-constants'
 import { JournalSliceContext } from '@/model/contexts/JournalSliceContext'
 import { CalendarResolution, CalendarResolutionSchema } from '@/model/schema/aggregate-schemas'
-import { getAbsoluteDatesFromCalendarRange } from '@/utils/date'
+import { getAbsoluteDatesFromCalendarRange } from '@/utils/date-utils'
 import { ArrowBack, ArrowDropDown, ArrowForward, CalendarToday } from '@mui/icons-material'
 import {
   Button,
@@ -229,7 +229,12 @@ export default function LedgerDateNavigation() {
           />
         </LocalizationProvider>
       </Popover>
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          alignItems: 'center'
+        }}>
         {!hideDateViewPicker && (
           <Button
             variant="text"
@@ -279,5 +284,5 @@ export default function LedgerDateNavigation() {
         )}
       </Stack>
     </>
-  )
+  );
 }

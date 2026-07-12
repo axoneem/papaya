@@ -1,13 +1,13 @@
+import { SCHEMA_VERSION } from "@/constants/orm-constants";
 import { getDatabaseClient } from "@/model/database/database-client";
 import { ResourceSchemaRegistry } from "@/model/orm/ResourceSchemaRegistry";
 import { PapayaResourceNamespace, PapayaResourceRid } from "@/model/schema/namespace-schemas";
 import { OrmDocument } from "@/model/types/orm-types";
-import dayjs from "dayjs";
+import { timestamp } from "@/utils/date-utils";
 import { v6 as uuidv6 } from "uuid";
 import z from "zod";
 
-// TODO determine programmatically
-type ResourceBaseShapeKeys = 'rid' | 'kind' | 'updatedAt' | '@version'
+type ResourceBaseShapeKeys = 'rid' | 'kind' | 'createdAt' | 'updatedAt' | '@version'
 
 type Resource<N extends PapayaResourceNamespace> = z.infer<typeof ResourceSchemaRegistry[N]>;
 
@@ -32,6 +32,15 @@ export abstract class Repository<N extends PapayaResourceNamespace> {
    */
   protected abstract factory(data: Partial<Resource<N>>): ResourceIntrinsic<N>;
 
+  /**
+   * Abstract method that is called before a resource is saved to the database.
+   * This allows for additional processing of the resource before it is saved,
+   * such as adding timestamps or other metadata.
+   */
+  protected beforeSave(data: Resource<N> & Partial<OrmDocument>): Promise<Resource<N> & Partial<OrmDocument>> {
+    return Promise.resolve(data);
+  }
+
   public validate(data: Resource<N>) {
     return this.schema.safeParse(data)
   }
@@ -53,8 +62,9 @@ export abstract class Repository<N extends PapayaResourceNamespace> {
       return {
         rid: this.makeRid(),
         kind,
-        updatedAt: dayjs().toISOString(),
-        '@version': 0,
+        createdAt: null,
+        updatedAt: null,
+        '@version': SCHEMA_VERSION,
         ...resource,
       } as Resource<N>;
     },
@@ -80,10 +90,12 @@ export abstract class Repository<N extends PapayaResourceNamespace> {
 
       const db = await this.getDb();
 
-      const response = await db.put(doc as PouchDB.Core.PutDocument<Resource<N>>) as PouchDB.Core.Response;
+      const processedDoc = timestamp(await this.beforeSave(doc)) as OrmDocument<Resource<N>>
+
+      const response = await db.put(processedDoc as PouchDB.Core.PutDocument<Resource<N>>) as PouchDB.Core.Response;
 
       return {
-        ...doc,
+        ...processedDoc,
         _rev: response.rev,
       };
     },

@@ -52,12 +52,14 @@ export default function UserWidget() {
             vertical: 'top',
             horizontal: 'right',
           }}
-          MenuListProps={{
-            sx: { minWidth: 250 },
-          }}
           open={Boolean(anchorEl)}
           onClose={handleClose}
-          anchorEl={anchorEl}>
+          anchorEl={anchorEl}
+          slotProps={{
+            list: {
+              sx: { minWidth: 250 },
+            }
+          }}>
           <Box component="li" sx={{ px: 2, pb: 1 }}>
             <Typography variant="subtitle1">
               <strong>{name}</strong>
@@ -66,7 +68,7 @@ export default function UserWidget() {
           <MenuItem onClick={() => handleSignOut()}>Sign Out</MenuItem>
         </Menu>
       </>
-    )
+    );
   }
 
   return (

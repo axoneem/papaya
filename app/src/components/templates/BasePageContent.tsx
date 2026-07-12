@@ -12,14 +12,26 @@ type IBasePageContentProps = PropsWithChildren<{
  */
 export default function BasePageContent(props: IBasePageContentProps) {
   return (
-    <Stack flex={1}>
-      <Stack mb={2} direction="row" gap={1} justifyContent="space-between">
+    <Stack sx={{
+      flex: 1
+    }}>
+      <Stack
+        direction="row"
+        sx={{
+          mb: 2,
+          gap: 1,
+          justifyContent: "space-between"
+        }}>
         <Typography variant="h2">{props.pageTitle}</Typography>
       </Stack>
       <Typography>{props.pageDescription}</Typography>
-      <Stack flex={1} mt={3}>
+      <Stack
+        sx={{
+          flex: 1,
+          mt: 3
+        }}>
         {props.children}
       </Stack>
     </Stack>
-  )
+  );
 }

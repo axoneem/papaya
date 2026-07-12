@@ -133,15 +133,25 @@ export default function AppMenu(props: AppMenuProps) {
     if (isExpanded) {
       return (
         <MenuItemList>
-          <Box mb={4}>
+          <Box sx={{
+            mb: 4
+          }}>
             <CreateEntryButton expanded view="desktop" />
           </Box>
         </MenuItemList>
-      )
+      );
     } else {
       return (
-        <Stack gap={0.5} px={2} py={1} alignItems={'center'}>
-          <Box mb={2}>
+        <Stack
+          sx={{
+            gap: 0.5,
+            px: 2,
+            py: 1,
+            alignItems: 'center'
+          }}>
+          <Box sx={{
+            mb: 2
+          }}>
             <CreateEntryButton expanded={false} view="desktop" />
           </Box>
           {Object.entries(APP_MENU).map(([slug, menuItem]) => {
@@ -162,7 +172,7 @@ export default function AppMenu(props: AppMenuProps) {
             )
           })}
         </Stack>
-      )
+      );
     }
   } else {
     return (
@@ -172,9 +182,18 @@ export default function AppMenu(props: AppMenuProps) {
           anchor="left"
           open={isDrawerOpen}
           onClose={() => closeDrawer()}
-          PaperProps={{ sx: { minWidth: '80vw' } }}>
-          <Box p={2}>
-            <Stack direction="row" alignItems={'center'} gap={2}>
+          slotProps={{
+            paper: { sx: { minWidth: '80vw' } }
+          }}>
+          <Box sx={{
+            p: 2
+          }}>
+            <Stack
+              direction="row"
+              sx={{
+                gap: 2,
+                alignItems: 'center'
+              }}>
               <IconButton onClick={() => closeDrawer()} size="large" sx={{ m: -1 }}>
                 <Menu />
               </IconButton>
@@ -185,6 +204,6 @@ export default function AppMenu(props: AppMenuProps) {
           <MenuItemList />
         </Drawer>
       </>
-    )
+    );
   }
 }

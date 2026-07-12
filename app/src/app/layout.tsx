@@ -13,7 +13,7 @@ export default function RootLayout(props: LayoutProps<'/'>) {
     <html>
       <body>
         <AppThemeLayout>
-          <main>
+          <main id='papaya-app'>
             <AppDataLayout>
               {props.children}
             </AppDataLayout>

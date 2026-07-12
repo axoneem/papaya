@@ -1,12 +1,11 @@
 import z from "zod";
 
 export const PapayaResourceNamespaceSchema = z.enum([
-  "Journal",
   "JournalEntry",
+  "Transaction",
   "Preferences",
   "Person",
   "Task",
-  "Transaction",
 ] as const);
 
 export const ridSchemaFromNamespace = <N extends PapayaResourceNamespace>(
@@ -30,12 +29,11 @@ const ResourceRidRegistry = Object.fromEntries(
   };
 
 export const {
-  JournalRidSchema,
   JournalEntryRidSchema,
+  TransactionRidSchema,
   PreferencesRidSchema,
   PersonRidSchema,
   TaskRidSchema,
-  TransactionRidSchema,
 } = ResourceRidRegistry;
 
 export const PapayaResourceRidSchema = z.union(Object.values(ResourceRidRegistry));
@@ -44,9 +42,7 @@ export type PapayaResourceNamespace = z.infer<typeof PapayaResourceNamespaceSche
 export type PapayaResourceKind<N extends PapayaResourceNamespace> = `papaya:${Lowercase<N>}`;
 export type PapayaResourceRid<N extends PapayaResourceNamespace> = `${PapayaResourceKind<N>}:${string}`;
 
-export type JournalRid = z.infer<typeof JournalRidSchema>;
 export type JournalEntryRid = z.infer<typeof JournalEntryRidSchema>;
 export type PersonRid = z.infer<typeof PersonRidSchema>;
 export type TaskRid = z.infer<typeof TaskRidSchema>;
-export type TransactionRid = z.infer<typeof TransactionRidSchema>;
 export type PreferencesRid = z.infer<typeof PreferencesRidSchema>;

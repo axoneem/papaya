@@ -11,10 +11,17 @@ export default function CopyField(props: CopyFieldProps) {
   const { sx, copyText, label, ...rest } = props;
 
   return (
-    <Stack direction="row" gap={1} alignItems="center">
+    <Stack
+      direction="row"
+      sx={{
+        gap: 1,
+        alignItems: 'center'
+      }}>
       <Typography {...rest} sx={{ ...sx, fontFamily: 'monospace' }}>
         {label && (
-          <Typography variant="body2" color="text.secondary" component="span">
+          <Typography variant="body2" component="span" sx={{
+            color: "text.secondary"
+          }}>
             {label}:&nbsp;
           </Typography>
         )}
@@ -29,5 +36,5 @@ export default function CopyField(props: CopyFieldProps) {
         <FileCopy />
       </IconButton>
     </Stack>
-  )
+  );
 }

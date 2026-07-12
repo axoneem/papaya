@@ -1,21 +1,20 @@
+import { JournalEntryForm } from "@/model/schema/form-schemas";
+import { useFormContext } from "react-hook-form";
+
 import AmountField from "@/components/shared/inputs/field/AmountField";
 import DateField from "@/components/shared/inputs/field/DateField";
 import TopicField from "@/components/shared/inputs/field/TopicField";
-import { JournalEntryForm } from "@/model/schema/form-schemas";
-import { TransactionRid } from "@/model/schema/namespace-schemas";
 import { Card, Grid, Stack, TextField } from "@mui/material";
 import dayjs from "dayjs";
-import { Controller, useFormContext, type FieldPath } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
-interface TransactionFormProps {
-  transactionRid: TransactionRid;
-}
-
-export function JournalEntryTransactionForm(props: TransactionFormProps) {
+export function EditJournalEntryForm() {
   const { control, register } = useFormContext<JournalEntryForm>()
 
   return (
-    <Stack gap={2}>
+    <Stack sx={{
+      gap: 2
+    }}>
       <Card sx={{ p: 2 }}>
         <Grid container columns={12} spacing={1} rowSpacing={1.5} sx={{ flex: '1' }}>
           <Grid size={8}>
@@ -23,13 +22,13 @@ export function JournalEntryTransactionForm(props: TransactionFormProps) {
               size="small"
               label="Memo"
               fullWidth
-              {...register(`transactions.${props.transactionRid}.memo`)}
+              {...register('memo')}
             />
           </Grid>
           <Grid size={4}>
             <Controller<JournalEntryForm>
               control={control}
-              name={`transactions.${props.transactionRid}.date`}
+              name='date'
               render={({ field }) => (
                 <DateField
                   slotProps={{
@@ -52,7 +51,7 @@ export function JournalEntryTransactionForm(props: TransactionFormProps) {
           <Grid size={4}>
             <Controller
               control={control}
-              name={`transactions.${props.transactionRid}.amountString`}
+              name='amountString'
               render={({ field }) => (
                 <AmountField
                   size="small"
@@ -68,9 +67,7 @@ export function JournalEntryTransactionForm(props: TransactionFormProps) {
           <Grid size={'grow'}>
             <Controller<JournalEntryForm>
               control={control}
-              name={
-                `transactions.${props.transactionRid}.topics` as FieldPath<JournalEntryForm>
-              }
+              name='topics'
               render={({ field }) => (
                 <TopicField
                   knownTopics={[]}
@@ -87,5 +84,5 @@ export function JournalEntryTransactionForm(props: TransactionFormProps) {
         </Grid>
       </Card>
     </Stack>
-  )
+  );
 }

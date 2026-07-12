@@ -53,7 +53,9 @@ export default function AmountField(props: AmountFieldProps) {
   const { disableSignChange, slotProps, sx, approximate, ...rest } = props
 
   return (
-    <Stack direction="row" gap={1}>
+    <Stack direction="row" sx={{
+      gap: 1
+    }}>
       <TextField
         label="Amount"
         placeholder="00.00"
@@ -97,5 +99,5 @@ export default function AmountField(props: AmountFieldProps) {
                 <ToggleButton value='expense' tabIndex={isIncome ? undefined : -1}>Expense</ToggleButton>
             </ToggleButtonGroup> */}
     </Stack>
-  )
+  );
 }

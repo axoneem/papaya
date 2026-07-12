@@ -1,7 +1,6 @@
 import { PapayaResourceNamespace } from "@/model/schema/namespace-schemas";
 import {
   JournalEntrySchema,
-  JournalSchema,
   PersonSchema,
   PreferencesSchema,
   TaskSchema,
@@ -10,7 +9,6 @@ import {
 import { ResourceSchema } from "@/model/schema/template-schemas";
 
 export const ResourceSchemaRegistry = {
-  Journal: JournalSchema,
   JournalEntry: JournalEntrySchema,
   Preferences: PreferencesSchema,
   Person: PersonSchema,

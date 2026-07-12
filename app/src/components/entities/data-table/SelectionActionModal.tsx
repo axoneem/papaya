@@ -57,8 +57,8 @@ export default function SelectionActionModal(props: SelectionActionModalProps) {
             <Paper>
               <Stack
                 direction="row"
-                alignItems={'center'}
                 sx={{
+                  alignItems: 'center',
                   'button:not(.MuiIconButton-root):not(:first-child)': {
                     borderTopLeftRadius: 0,
                     borderBottomLeftRadius: 0,
@@ -80,7 +80,9 @@ export default function SelectionActionModal(props: SelectionActionModalProps) {
                     sx={{ mx: -1 }}
                     disableTouchRipple
                   />
-                  <Typography color="inherit">{numSelectedDisplayed} selected</Typography>
+                  <Typography sx={{
+                    color: "inherit"
+                  }}>{numSelectedDisplayed} selected</Typography>
                 </Button>
                 {props.actions?.onDelete && (
                   <>
@@ -102,5 +104,5 @@ export default function SelectionActionModal(props: SelectionActionModalProps) {
         )}
       </Popper>
     </ClickAwayListener>
-  )
+  );
 }

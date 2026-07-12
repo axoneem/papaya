@@ -83,28 +83,40 @@ export default function IconPicker(props: IconPickerProps) {
 
   return (
     <>
-      <Stack direction="row" p={2} gap={1} alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          p: 2,
+          gap: 1,
+          alignItems: 'center'
+        }}>
         <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
           placeholder="Find icon..."
           variant="outlined"
           size="small"
           fullWidth
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }
+          }}
         />
         <ColorPicker color={color} onChange={handleChangeColor} />
         <Button onClick={() => handleShuffle()} variant="outlined" size="small">
           <Shuffle />
         </Button>
       </Stack>
-      <Box pl={2} mt={2}>
+      <Box
+        sx={{
+          pl: 2,
+          mt: 2
+        }}>
         <FixedSizeGrid
           columnCount={COLUMN_COUNT}
           columnWidth={CELL_SIZE}
@@ -141,5 +153,5 @@ export default function IconPicker(props: IconPickerProps) {
         </FixedSizeGrid>
       </Box>
     </>
-  )
+  );
 }

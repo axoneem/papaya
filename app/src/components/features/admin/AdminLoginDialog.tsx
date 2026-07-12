@@ -49,7 +49,9 @@ export default function AdminLoginDialog() {
       <DialogTitle>Admin Login</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
-          <Stack gap={2}>
+          <Stack sx={{
+            gap: 2
+          }}>
             <TextField
               {...form.register('username')}
               label="Admin Username"
@@ -71,5 +73,5 @@ export default function AdminLoginDialog() {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

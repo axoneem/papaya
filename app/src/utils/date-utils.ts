@@ -46,3 +46,21 @@ export const getAbsoluteDatesFromCalendarRange = (range: CalendarRange): [dayjs.
 
   return fromDate.isBefore(toDate) ? [fromDate, toDate] : [toDate, fromDate];
 }
+
+export const getToday = () => {
+  return dayjs().format('YYYY-MM-DD');
+}
+
+export const timestamp = <T extends object>(resource: T): T => {
+  const now = dayjs().toISOString();
+  if ('createdAt' in resource && 'updatedAt' in resource) {
+    if (!resource.createdAt && !resource.updatedAt) {
+      resource.createdAt = now;
+      return resource;
+    } else {
+      resource.updatedAt = now;
+    }
+  }
+
+  return resource;
+}

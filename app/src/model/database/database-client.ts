@@ -1,56 +1,87 @@
 'use client';
 
-import { PapayaResource } from '@/model/orm/Repository';
+import { POUCH_DB_DESIGN_DOC_ID, POUCH_DB_NAME } from '@/constants/orm-constants';
+import { DatabaseView, databaseViews, PapayaDatabaseView } from '@/model/database/database-views';
 import { OrmDocument } from '@/model/types/orm-types';
 import PouchDB from 'pouchdb';
-import PouchDBFind from 'pouchdb-find';
 
-declare function emit(key: string, value: string): void;
+let dbClientPromise: Promise<PouchDB.Database> | null = null
 
-const POUCH_DB_NAME = 'papaya'
+type PapayaDesignDoc = {
+  '_id': typeof POUCH_DB_DESIGN_DOC_ID;
+  version: number;
+  views: Record<PapayaDatabaseView, {
+    map: string;
+    reduce?: string;
+  }>;
+}
 
-PouchDB.plugin(PouchDBFind)
-
-let db: PouchDB.Database | null = null
-
-type PapayaDocument = OrmDocument<PapayaResource>;
+const designDoc: PapayaDesignDoc = {
+  '_id': POUCH_DB_DESIGN_DOC_ID,
+  version: 20260427,
+  views: Object.fromEntries(
+    Object
+      .entries(databaseViews)
+      .map(([name, view]: [PapayaDatabaseView, DatabaseView]) => {
+        return [
+          name,
+          {
+            map: view.map.toString(),
+            reduce: view.reduce?.toString(),
+          },
+        ];
+      })
+  ) as Record<PapayaDatabaseView, {
+    map: string;
+    reduce?: string;
+  }>,
+} as const;
 
 const initializeDatabaseClient = async () => {
-  db = new PouchDB(POUCH_DB_NAME)
+  console.log('initializing database client');
+  const db = new PouchDB(POUCH_DB_NAME)
 
-  db.createIndex({
-    index: {
-      fields: [
-        'rid',
-        'kind',
-        'updatedAt',
-        '@version',
-      ],
-    },
-  })
+  // Load the design doc from the database
+  let existingDesignDoc: OrmDocument<PapayaDesignDoc> | undefined = undefined;
 
-
-  const designDoc = {
-    '_id': '_design/papaya',
-    views: {
-      'journal_entries_by_rid': {
-        map: function (doc: PapayaDocument) {
-          if (doc.kind === 'papaya:journalentry') {
-            emit(doc.rid, doc.rid);
-          }
-        }.toString(),
-      },
+  await db.get(POUCH_DB_DESIGN_DOC_ID).then((doc) => {
+    console.log('found design doc: ', doc);
+    if (doc && '_id' in doc) {
+      existingDesignDoc = doc as unknown as OrmDocument<PapayaDesignDoc>;
     }
+  }).catch((err: PouchDB.Core.Error) => {
+    console.log('error getting design doc: ', err);
+    if (err.status !== 404) {
+      console.error('error getting design doc: ', err);
+    }
+  });
+
+  if (!existingDesignDoc) {
+    console.log('creating design doc');
+    await db.put(designDoc).catch((err) => {
+      console.error('error creating design doc: ', err);
+    });
+  } else if (!('version' in existingDesignDoc) || existingDesignDoc.version < designDoc.version) {
+    console.log('design doc needs update');
+    await db.put({
+      ...existingDesignDoc,
+      ...designDoc,
+    }).catch((err) => {
+      console.error('error updating design doc: ', err);
+    });
   }
 
-  await db.put(designDoc);
+  console.log('database client initialized');
 
   return db;
 }
 
-export const getDatabaseClient = async () => {
-  if (!db) {
-    return initializeDatabaseClient();
+export function getDatabaseClient(): Promise<PouchDB.Database> {
+  if (!dbClientPromise) {
+    dbClientPromise = initializeDatabaseClient().catch((err) => {
+      dbClientPromise = null;
+      throw err;
+    });
   }
-  return db
+  return dbClientPromise;
 }

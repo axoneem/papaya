@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['pouchdb', 'pouchdb-find'],
+  serverExternalPackages: ['pouchdb'],
 }
 
 module.exports = nextConfig

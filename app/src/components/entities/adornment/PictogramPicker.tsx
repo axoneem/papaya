@@ -66,7 +66,11 @@ export default function PictogramPicker(props: PictogramPickerProps) {
           vertical: 'top',
           horizontal: 'center',
         }}>
-        <Box px={2} pt={1}>
+        <Box
+          sx={{
+            px: 2,
+            pt: 1
+          }}>
           <Tabs value={currentTab} onChange={(_event, newValue) => setCurrentTab(newValue)}>
             <Tab label="Icon" />
             {/* <Tab disabled label='Emoji' />
@@ -80,5 +84,5 @@ export default function PictogramPicker(props: PictogramPickerProps) {
         {currentTab === 1 && <ImagePictogramPicker value={displayIcon} onChange={handleChange} />}
       </Popover>
     </>
-  )
+  );
 }

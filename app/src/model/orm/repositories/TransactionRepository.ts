@@ -6,11 +6,14 @@ export class TransactionRepository extends Repository<"Transaction"> {
     super("Transaction");
   }
 
-  factory = (data: Partial<Transaction>): ResourceIntrinsic<"Transaction"> => {
+  factory = (data: Partial<Transaction> = {}): ResourceIntrinsic<"Transaction"> => {
     return {
-      parent: data.parent!,
-      memo: data.memo ?? "",
       amount: data.amount ?? 0,
+      memo: data.memo ?? "",
+      postedAt: data.postedAt,
+      sourceAccount: data.sourceAccount,
+      destinationAccount: data.destinationAccount,
+      convertedFrom: data.convertedFrom,
     };
   };
 }

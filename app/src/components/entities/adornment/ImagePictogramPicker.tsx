@@ -64,7 +64,9 @@ export default function ImagePictogramPicker(props: ImagePictogramPicker) {
   }
 
   return (
-    <Box p={2}>
+    <Box sx={{
+      p: 2
+    }}>
       <input
         type="file"
         onChange={handleFileChange}
@@ -72,7 +74,12 @@ export default function ImagePictogramPicker(props: ImagePictogramPicker) {
         style={{ display: 'none' }}
         ref={fileInputRef}
       />
-      <Stack direction="row" sx={{ mb: 1 }} gap={2}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 2,
+          mb: 1
+        }}>
         {hasImageIcon && (
           <>
             <ImagePictogram pictogram={props.value} />
@@ -93,5 +100,5 @@ export default function ImagePictogramPicker(props: ImagePictogramPicker) {
       </Stack>
       {uploadError && <FormHelperText error>{uploadError}</FormHelperText>}
     </Box>
-  )
+  );
 }
